@@ -156,7 +156,7 @@ const Register = () => {
     };
 
     return (
-        <div className="flex items-center justify-center mx-[5%] mt-16">
+        <div className="flex items-center justify-center mx-[5%] py-16">
             <div className="grid grid-cols-1 lg:grid-cols-2 w-full max-w-5xl bg-base-100 rounded-2xl shadow-lg border border-gray-300 overflow-hidden">
 
                 {/* Left Image */}

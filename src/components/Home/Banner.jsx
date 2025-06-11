@@ -53,7 +53,7 @@ const Banner = () => {
                 {slides.map((slide, idx) => (
                     <div key={idx}>
                         <div
-                            className="relative h-[80vh] bg-cover bg-center"
+                            className="relative h-[90vh] bg-cover bg-center"
                             style={{ backgroundImage: `url(${slide.image})` }}
                         >
                             <div className="absolute inset-0 bg-black/50 flex items-center justify-center">

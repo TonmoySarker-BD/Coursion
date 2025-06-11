@@ -10,7 +10,9 @@ const HomeLayout = () => {
                 <Navbar></Navbar>
 
             </header>
-            <main className='min-h-auto  md:min-h-[70vh]'>
+            <main className='min-h-auto  md:min-h-[60vh]' style={{
+                background: 'linear-gradient(135deg, rgba(255, 94, 170, 0.3), rgba(104, 68, 217, 0.3))'
+            }}>
                 <Outlet></Outlet>
             </main>
             <footer>
