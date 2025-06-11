@@ -21,10 +21,11 @@ const Navbar = () => {
         <>
             <li><Link to="/">Home</Link></li>
             <li><Link to="/courses">Courses</Link></li>
+            <li><Link to="/jobs">Jobs</Link></li>
             <li><Link to="/blog">Blog</Link></li>
+            {user && <li><Link to="/my-courses">My Courses</Link></li>}
             {user && <li><Link to="/add-course">Add Course</Link></li>}
             {user && <li><Link to="/manage-courses">Manage Courses</Link></li>}
-            {user && <li><Link to="/my-courses">My Courses</Link></li>}
         </>
     );
 
@@ -55,9 +56,10 @@ const Navbar = () => {
             <div className="navbar-end flex items-center">
                 <ThemeSwitch />
                 {!user ? (
-                    <>
+                    <div className="flex gap-2">
                         <Link to="/signin" className="btn btn-sm btn-outline">Sign In</Link>
-                    </>
+                        <Link to="/register" className="hidden md:flex btn btn-sm btn-outline">Register</Link>
+                    </div>
                 ) : (
                     <div className="dropdown dropdown-end">
                         <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">

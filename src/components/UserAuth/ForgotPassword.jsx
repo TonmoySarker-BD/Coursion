@@ -15,14 +15,15 @@ const ForgotPassword = () => {
             await forgotPassword(email);
             Swal.fire({
                 icon: "success",
-                title: "Reset link sent to your email!",
-                showConfirmButton: false,
-                timer: 2000,
-            });
-            setTimeout(() => {
-                window.open('https://mail.google.com', '_blank');
+                title: "Reset link sent!",
+                text: "Please check your email.",
+                confirmButtonText: "Open Gmail",
+                confirmButtonColor: "#22c55e",
+            }).then(() => {
+                window.open('https://mail.google.com',);
                 navigate('/signin');
-            }, 2000);
+            });
+
             setEmail("");
         } catch (err) {
             console.error(err);
@@ -38,7 +39,7 @@ const ForgotPassword = () => {
     };
 
     return (
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center mx-[5%] mt-16">
             <div className="grid grid-cols-1 lg:grid-cols-2 w-full max-w-5xl bg-base-100 rounded-2xl shadow-lg border border-gray-300 overflow-hidden">
 
                 {/* Left-side image with overlay */}
@@ -61,6 +62,9 @@ const ForgotPassword = () => {
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <input
                                 type="email"
+                                name="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                                 placeholder="Enter your email..."
                                 className="w-full input input-bordered"
                                 required
