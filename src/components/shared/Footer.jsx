@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { use } from 'react';
 import { Link } from 'react-router';
 import { FaFacebook, FaTwitter, FaGithub, FaLinkedin } from 'react-icons/fa';
 import logo from '../../assets/logo.png';
+import { AuthContext } from '../../context/Auth/AuthContext';
 
 const Footer = () => {
+    const { user } = use(AuthContext);
     return (
         <footer className="bg-success/50 text-base-content px-[5%] py-10 mt-10">
             <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -32,12 +34,25 @@ const Footer = () => {
                 </div>
 
                 <div>
-                    <h4 className="font-semibold text-lg mb-2">Account</h4>
-                    <ul className="space-y-1">
-                        <li><Link to="/signin">Sign In</Link></li>
-                        <li><Link to="/register">Register</Link></li>
-                        <li><Link to="/terms&conditions">Terms & Conditions</Link></li>
-                    </ul>
+                    {user ? (
+                        <>
+                            <h4 className="font-semibold text-lg mb-2">Quick Links</h4>
+                            <ul className="space-y-1">
+                                <li><Link to="/my-courses">My Courses </Link></li>
+                                <li><Link to="/manage-courses">Manage Courses</Link></li>
+                                <li><Link to="/add-course">Add Course</Link></li>
+                            </ul>
+                        </>
+                    ) : (
+                        <>
+                            <h4 className="font-semibold text-lg mb-2">Account</h4>
+                            <ul className="space-y-1">
+                                <li><Link to="/signin">Sign In</Link></li>
+                                <li><Link to="/register">Register</Link></li>
+                                <li><Link to="/terms&conditions">Terms & Conditions</Link></li>
+                            </ul>
+                        </>
+                    )}
                 </div>
             </div>
 

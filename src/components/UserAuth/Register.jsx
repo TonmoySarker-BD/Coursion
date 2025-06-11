@@ -1,5 +1,5 @@
 import React, { use, useState } from "react";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import authbg from "../../assets/auth-bg.svg";
 import { AuthContext } from "../../context/Auth/AuthContext";
@@ -9,7 +9,7 @@ import Swal from "sweetalert2";
 const Register = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const { signInWithGoogle, createUser, updateUser, setUser, setLoading } = use(AuthContext);
+    const { signInWithGoogle, signInWithGithub, createUser, updateUser, setUser, setLoading } = use(AuthContext);
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [passwordError, setPasswordError] = useState("");
@@ -37,10 +37,63 @@ const Register = () => {
             });
     };
 
-    const validatePassword = (password) => {
-        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}$/;
-        return regex.test(password);
+    const handleGithubSignIn = () => {
+        signInWithGithub()
+            .then(() => {
+                Swal.fire({
+                    icon: "success",
+                    title: "Signed in with GitHub",
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+                navigate(location.state?.from?.pathname || '/');
+            })
+            .catch(err => {
+                console.error(err);
+                Swal.fire({
+                    icon: "error",
+                    title: 'GitHub Sign-in Failed',
+                    text: getErrorMessage(err.code),
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            });
     };
+
+    const validatePassword = (password, confirmPassword, email) => {
+        const errors = [];
+
+        if (password.length < 8) {
+            errors.push("Password must be at least 8 characters long.");
+        }
+
+        if (!/[A-Z]/.test(password)) {
+            errors.push("Password must contain at least one uppercase letter.");
+        }
+
+        if (!/[a-z]/.test(password)) {
+            errors.push("Password must contain at least one lowercase letter.");
+        }
+
+        if (!/\d/.test(password)) {
+            errors.push("Password must contain at least one number.");
+        }
+
+        if (!/[\W_]/.test(password)) {
+            errors.push("Password must contain at least one special character.");
+        }
+
+        if (email && password.toLowerCase().includes(email.split("@")[0].toLowerCase())) {
+            errors.push("Password cannot contain your email address.");
+        }
+
+        if (password !== confirmPassword) {
+            errors.push("Password and confirm password do not match.");
+        }
+
+        return errors;
+    };
+
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -50,14 +103,12 @@ const Register = () => {
         const trimmedName = name.value.trim();
         const trimmedEmail = email.value.trim();
         const trimmedPhoto = photoURL.value.trim();
+        const pwd = password.value;
+        const confirmPwd = confirmPassword.value;
 
-        if (password.value !== confirmPassword.value) {
-            setPasswordError("Passwords do not match.");
-            return;
-        }
-
-        if (!validatePassword(password.value)) {
-            setPasswordError("Password must be at least 8 characters, include uppercase, lowercase, and a special character.");
+        const validationErrors = validatePassword(pwd, confirmPwd, trimmedEmail);
+        if (validationErrors.length > 0) {
+            setPasswordError(validationErrors.join("\n"));
             return;
         }
 
@@ -179,7 +230,11 @@ const Register = () => {
                                     {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
                                 </button>
                                 {passwordError && (
-                                    <p className="text-error text-sm mt-1">{passwordError}</p>
+                                    <ul className="text-error text-sm list-disc ml-5">
+                                        {passwordError.split("\n").map((err, idx) => (
+                                            <li key={idx}>{err}</li>
+                                        ))}
+                                    </ul>
                                 )}
                             </div>
                             <button type="submit" className="btn btn-success w-full rounded-full">
@@ -194,14 +249,24 @@ const Register = () => {
                             <div className="h-px flex-1 bg-gray-300" />
                         </div>
 
-                        {/* Google Sign-Up */}
-                        <button
-                            onClick={handleGoogleSignUp}
-                            className="btn btn-outline bg-success/50 w-full flex items-center justify-center gap-2 rounded-full"
-                        >
-                            <FcGoogle />
-                            Continue with Google
-                        </button>
+                        <div className="flex items-center justify-center  gap-2">
+                            {/* Google Sign-In */}
+                            <button
+                                onClick={handleGoogleSignUp}
+                                className="btn btn-outline bg-success/50 flex items-center justify-center gap-2 rounded-full"
+                            >
+                                <FcGoogle />
+                                Continue with Google
+                            </button>
+                            {/* Github Sign-In */}
+                            <button
+                                onClick={handleGithubSignIn}
+                                className="btn btn-outline bg-success/50 flex items-center justify-center gap-2 rounded-full"
+                            >
+                                <FaGithub />
+                                Continue with GitHub
+                            </button>
+                        </div>
 
                         {/* Sign In Link */}
                         <p className="text-center text-sm mt-4">

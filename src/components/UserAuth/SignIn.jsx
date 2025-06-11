@@ -1,5 +1,5 @@
 import React, { use, useState } from "react";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaGithub } from "react-icons/fa";
 import authbg from "../../assets/auth-bg.svg";
 import { FcGoogle } from "react-icons/fc";
 import { AuthContext } from "../../context/Auth/AuthContext";
@@ -9,7 +9,7 @@ import { useLocation, useNavigate } from "react-router";
 const SignIn = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const { signInWithGoogle, signInUser, setLoading } = use(AuthContext);
+    const { signInWithGoogle, signInWithGithub, signInUser, setLoading } = use(AuthContext);
     const [showPassword, setShowPassword] = useState(false);
 
     const handleGoogleSignIn = () => {
@@ -33,6 +33,31 @@ const SignIn = () => {
                     timer: 2000
                 });
             });
+    };
+
+    const handleGithubSignIn = () => {
+        signInWithGithub()
+            .then(() => {
+                Swal.fire({
+                    icon: "success",
+                    title: "Signed in with GitHub",
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+                navigate(location.state?.from?.pathname || '/');
+            })
+            .catch(err => {
+                console.error(err);
+                Swal.fire({
+                    icon: "error",
+                    title: 'GitHub Sign-in Failed',
+                    text: getErrorMessage(err.code),
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            }).finally(() => {
+                setLoading(false);
+            })
     };
 
     const handleSubmit = async (e) => {
@@ -140,14 +165,24 @@ const SignIn = () => {
                             <div className="h-px flex-1 bg-gray-300" />
                         </div>
 
-                        {/* Google Sign-In */}
-                        <button
-                            onClick={handleGoogleSignIn}
-                            className="btn btn-outline bg-success/50 w-full flex items-center justify-center gap-2 rounded-full"
-                        >
-                            <FcGoogle />
-                            Continue with Google
-                        </button>
+                        <div className="flex items-center justify-center  gap-2">
+                            {/* Google Sign-In */}
+                            <button
+                                onClick={handleGoogleSignIn}
+                                className="btn btn-outline bg-success/50 flex items-center justify-center gap-2 rounded-full"
+                            >
+                                <FcGoogle />
+                                Continue with Google
+                            </button>
+                            {/* Github Sign-In */}
+                            <button
+                                onClick={handleGithubSignIn}
+                                className="btn btn-outline bg-success/50 flex items-center justify-center gap-2 rounded-full"
+                            >
+                                <FaGithub />
+                                Continue with GitHub
+                            </button>
+                        </div>
 
                         {/* Sign In link */}
                         <p className="text-center text-sm mt-4">
