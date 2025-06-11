@@ -10,7 +10,7 @@ const HomeLayout = () => {
                 <Navbar></Navbar>
 
             </header>
-            <main className='min-h-[70vh]'>
+            <main className='min-h-auto mt-16 mx-[5%] md:min-h-[70vh]'>
                 <Outlet></Outlet>
             </main>
             <footer>
