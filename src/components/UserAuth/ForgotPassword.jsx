@@ -1,10 +1,40 @@
-import React from "react";
+import React, { use, useState } from "react";
 import authbg from "../../assets/auth-bg.svg";
+import { AuthContext } from "../../context/Auth/AuthContext";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router";
 
 const ForgotPassword = () => {
-    const handleSubmit = (e) => {
+    const { forgotPassword, setLoading } = use(AuthContext);
+    const [email, setEmail] = useState("");
+    const navigate = useNavigate();
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Password reset requested");
+        try {
+            await forgotPassword(email);
+            Swal.fire({
+                icon: "success",
+                title: "Reset link sent to your email!",
+                showConfirmButton: false,
+                timer: 2000,
+            });
+            setTimeout(() => {
+                window.open('https://mail.google.com', '_blank');
+                navigate('/signin');
+            }, 2000);
+            setEmail("");
+        } catch (err) {
+            console.error(err);
+            Swal.fire({
+                icon: "error",
+                title: "Something went wrong",
+                showConfirmButton: false,
+                timer: 2000,
+            });
+        } finally {
+            setLoading(false)
+        }
     };
 
     return (

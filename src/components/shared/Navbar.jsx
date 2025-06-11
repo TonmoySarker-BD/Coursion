@@ -1,10 +1,22 @@
-import React from 'react';
-import { Link} from 'react-router';
+import React, { use } from 'react';
+import { Link, useNavigate } from 'react-router';
 import ThemeSwitch from '../../context/ThemeSwitch';
 import logo from "../../assets/logo.png";
+import { AuthContext } from '../../context/Auth/AuthContext';
+import { FaSignOutAlt, FaUser } from 'react-icons/fa';
 const Navbar = () => {
+    const { user, logout } = use(AuthContext);
+    const navigate = useNavigate();
 
-    const user = false;
+
+    const handleLogout = async () => {
+        try {
+            await logout();
+            navigate("/signin");
+        } catch (error) {
+            console.error("Failed to log out", error);
+        }
+    };
     const menu = (
         <>
             <li><Link to="/">Home</Link></li>
@@ -30,7 +42,7 @@ const Navbar = () => {
                         {menu}
                     </ul>
                 </div>
-                <Link to="/" className="btn btn-ghost text-xl font-bold flex items-center gap-2">
+                <Link to="/" className="text-xl font-bold flex items-center gap-2">
                     <img className="w-10" src={logo} alt="Coursion" />
                     Coursion
                 </Link>
@@ -54,8 +66,8 @@ const Navbar = () => {
                             </div>
                         </div>
                         <ul tabIndex={0} className="mt-3 z-20 p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
-                            <li><p className="text-sm">{user.displayName}</p></li>
-                            <li><button>Logout</button></li>
+                            <li><p className="text-sm"><FaUser></FaUser> {user.displayName}</p></li>
+                            <li><button onClick={handleLogout}> <FaSignOutAlt></FaSignOutAlt> Logout</button></li>
                         </ul>
                     </div>
                 )}

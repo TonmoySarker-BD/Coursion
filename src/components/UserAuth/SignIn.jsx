@@ -1,18 +1,82 @@
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import authbg from "../../assets/auth-bg.svg";
 import { FcGoogle } from "react-icons/fc";
+import { AuthContext } from "../../context/Auth/AuthContext";
+import Swal from "sweetalert2";
+import { useLocation, useNavigate } from "react-router";
 
 const SignIn = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const { signInWithGoogle, signInUser, setLoading } = use(AuthContext);
     const [showPassword, setShowPassword] = useState(false);
 
     const handleGoogleSignIn = () => {
-        console.log("Google Sign-in triggered");
+        signInWithGoogle()
+            .then(() => {
+                Swal.fire({
+                    icon: "success",
+                    title: "Signed in with Google",
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+                navigate(location.state?.from?.pathname || '/');
+            })
+            .catch(err => {
+                console.error(err);
+                Swal.fire({
+                    icon: "error",
+                    title: 'Google Sign-in Failed',
+                    text: getErrorMessage(err.code),
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        const formData = new FormData(e.target);
+        const data = Object.fromEntries(formData.entries());
+        try {
+            await signInUser(data.email, data.password);
+            Swal.fire({
+                icon: "success",
+                title: "Login successful",
+                showConfirmButton: false,
+                timer: 2000
+            });
+            navigate(location.state?.from?.pathname || '/');
+        } catch (err) {
+            Swal.fire({
+                icon: "error",
+                title: 'Login failed',
+                text: getErrorMessage(err.code),
+                confirmButtonColor: "#d33"
+            });
+        } finally {
+            setLoading(false);
+        }
     };
+
+    const getErrorMessage = (code) => {
+        switch (code) {
+            case 'auth/invalid-email':
+                return 'Invalid email address';
+            case 'auth/user-disabled':
+                return 'Account disabled';
+            case 'auth/user-not-found':
+                return 'No account found with this email';
+            case 'auth/wrong-password':
+                return 'Incorrect password';
+            case 'auth/popup-closed-by-user':
+                return 'Google sign-in was canceled';
+            default:
+                return 'Login failed. Please try again';
+        }
+    };
+
 
     return (
         <div className="flex items-center justify-center">
@@ -38,12 +102,14 @@ const SignIn = () => {
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <input
                                 type="text"
-                                placeholder="Username or Email..."
+                                name="email"
+                                placeholder="Email..."
                                 className="w-full input input-bordered"
                             />
                             <div className="relative">
                                 <input
                                     type={showPassword ? "text" : "password"}
+                                    name="password"
                                     placeholder="Password..."
                                     className="w-full input input-bordered pr-10"
                                 />
