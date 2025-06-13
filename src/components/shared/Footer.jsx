@@ -56,7 +56,7 @@ const Footer = () => {
                 </div>
             </div>
 
-            <div className="text-center mt-10 border-t pt-5 text-sm text-gray-500">
+            <div className="text-center mt-10 border-t pt-5 text-sm ">
                 © {new Date().getFullYear()} Coursion. All rights reserved.
             </div>
         </footer>
