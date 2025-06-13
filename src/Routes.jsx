@@ -2,11 +2,11 @@ import { createBrowserRouter } from "react-router";
 import App from "./App";
 import HomeLayout from "./layout/HomeLayout";
 import Home from "./components/Home/Home";
-import Course from "./components/Course/Course";
-import Blog from "./components/Blog/Blog";
 import SignIn from "./components/UserAuth/SignIn";
 import Register from "./components/UserAuth/Register";
 import ForgotPassword from "./components/UserAuth/ForgotPassword";
+import Courses from "./components/Course/Courses";
+import CourseDetails from "./components/Course/CourseDetails";
 
 export const router = createBrowserRouter([
     {
@@ -18,12 +18,12 @@ export const router = createBrowserRouter([
                 element: <Home></Home>
             },
             {
-                path: "/Course",
-                element: <Course></Course>
+                path: "/Courses",
+                element: <Courses></Courses>
             },
             {
-                path: "/blog",
-                element: <Blog></Blog>
+                path: "/Courses/:id",
+                element: <CourseDetails></CourseDetails>
             },
             {
                 path: "/signin",

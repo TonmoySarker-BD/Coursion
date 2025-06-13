@@ -5,104 +5,35 @@ import { FaSpinner, FaStar, FaRegStar, FaUserAlt, FaClock } from "react-icons/fa
 import { IoTimeOutline } from "react-icons/io5";
 import { MdOutlineDateRange } from "react-icons/md";
 
-// Enhanced dummy course data
-const dummyCourses = [
-    {
-        id: "1",
-        title: "Mastering React",
-        dateAdded: "2025-06-09",
-        image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
-        category: "Frontend",
-        difficulty: "Intermediate",
-        description: "Build scalable UIs with React & Hooks. Learn modern React patterns and best practices.",
-        rating: 4.8,
-        students: 1250,
-        duration: "24 hours",
-        instructor: "Sarah Johnson"
-    },
-    {
-        id: "2",
-        title: "Python for Data Science",
-        dateAdded: "2025-06-08",
-        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
-        category: "Data Science",
-        difficulty: "Beginner",
-        description: "Start your journey with data using Python. From basics to data visualization.",
-        rating: 4.6,
-        students: 980,
-        duration: "18 hours",
-        instructor: "Michael Chen"
-    },
-    {
-        id: "3",
-        title: "Advanced Node.js",
-        dateAdded: "2025-06-07",
-        image: "https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1528&q=80",
-        category: "Backend",
-        difficulty: "Advanced",
-        description: "Deep dive into scalable Node.js applications with microservices architecture.",
-        rating: 4.9,
-        students: 870,
-        duration: "30 hours",
-        instructor: "David Wilson"
-    },
-    {
-        id: "4",
-        title: "UI/UX Design Basics",
-        dateAdded: "2025-06-06",
-        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
-        category: "Design",
-        difficulty: "Beginner",
-        description: "Learn UI/UX fundamentals with real projects and case studies.",
-        rating: 4.7,
-        students: 1560,
-        duration: "15 hours",
-        instructor: "Emma Rodriguez"
-    },
-    {
-        id: "5",
-        title: "Machine Learning with TensorFlow",
-        dateAdded: "2025-06-05",
-        image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1465&q=80",
-        category: "AI",
-        difficulty: "Intermediate",
-        description: "Build ML models using TensorFlow and deploy them in production.",
-        rating: 4.5,
-        students: 1120,
-        duration: "28 hours",
-        instructor: "James Lee"
-    },
-    {
-        id: "6",
-        title: "Fullstack Web Development",
-        dateAdded: "2025-06-04",
-        image: "https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1528&q=80",
-        category: "Fullstack",
-        difficulty: "Advanced",
-        description: "Master frontend and backend development in one comprehensive course.",
-        rating: 4.9,
-        students: 2040,
-        duration: "40 hours",
-        instructor: "Sophia Martinez"
-    },
-];
-
 const LatestCourses = () => {
     const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
-        const timer = setTimeout(() => {
-            // Sort by latest date (newest first)
-            const sortedCourses = [...dummyCourses].sort(
-                (a, b) => new Date(b.dateAdded) - new Date(a.dateAdded)
-            );
-            setCourses(sortedCourses);
-            setLoading(false);
-        }, 1000);
+        const fetchCourses = async () => {
+            try {
+                const response = await fetch('/courses.json');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch courses');
+                }
+                const data = await response.json();
 
-        return () => clearTimeout(timer);
+                // Sort by latest date (newest first)
+                const sortedCourses = data.sort(
+                    (a, b) => new Date(b.dateAdded) - new Date(a.dateAdded)
+                );
+                setCourses(sortedCourses);
+            } catch (err) {
+                setError(err.message);
+                console.error("Error fetching courses:", err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchCourses();
     }, []);
 
     const renderStars = (rating) => {
@@ -131,6 +62,14 @@ const LatestCourses = () => {
         );
     }
 
+    if (error) {
+        return (
+            <div className="flex justify-center items-center h-64 text-red-500">
+                {error}
+            </div>
+        );
+    }
+
     return (
         <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
             <motion.div
@@ -139,7 +78,6 @@ const LatestCourses = () => {
                 transition={{ duration: 0.5 }}
                 className="text-center mb-12"
             >
-                
                 <h2 className="text-3xl md:text-4xl font-bold mb-3">
                     Latest <span className="text-success">Courses</span>
                 </h2>
@@ -148,96 +86,104 @@ const LatestCourses = () => {
                 </p>
             </motion.div>
 
-            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-                {courses.map((course, idx) => (
-                    <motion.div
-                        key={course.id}
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: idx * 0.1 }}
-                        whileHover={{ y: -5 }}
-                        className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:shadow-xl"
-                    >
-                        <div className="relative">
-                            <img
-                                src={course.image}
-                                alt={course.title}
-                                className="w-full h-48 object-cover"
-                                loading="lazy"
-                            />
-                            <div className="absolute top-3 right-3 bg-success text-white text-xs font-bold px-2 py-1 rounded-full">
-                                New
-                            </div>
-                        </div>
-
-                        <div className="p-6 space-y-4">
-                            <div className="flex justify-between items-start">
-                                <h3 className="text-xl font-bold text-gray-900 dark:text-white line-clamp-1">
-                                    {course.title}
-                                </h3>
-                                <span className={`px-2 py-1 text-xs rounded-full ${course.difficulty === 'Beginner' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' :
-                                        course.difficulty === 'Intermediate' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300' :
-                                            'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300'
-                                    }`}>
-                                    {course.difficulty}
-                                </span>
-                            </div>
-
-                            <p className="text-gray-600 dark:text-gray-300 line-clamp-2">
-                                {course.description}
-                            </p>
-
-                            <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
-                                <div className="flex items-center mr-4">
-                                    <FaUserAlt className="mr-1" />
-                                    <span>{course.instructor}</span>
+            {courses.length > 0 ? (
+                <>
+                    <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                        {courses.map((course, idx) => (
+                            <motion.div
+                                key={course.id}
+                                initial={{ opacity: 0, y: 30 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: idx * 0.1 }}
+                                whileHover={{ y: -5 }}
+                                className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:shadow-xl"
+                            >
+                                <div className="relative">
+                                    <img
+                                        src={course.image}
+                                        alt={course.title}
+                                        className="w-full h-48 object-cover"
+                                        loading="lazy"
+                                    />
+                                    <div className="absolute top-3 right-3 bg-success text-white text-xs font-bold px-2 py-1 rounded-full">
+                                        New
+                                    </div>
                                 </div>
-                                <div className="flex items-center">
-                                    <IoTimeOutline className="mr-1" />
-                                    <span>{course.duration}</span>
-                                </div>
-                            </div>
 
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center">
-                                    {renderStars(course.rating)}
-                                    <span className="ml-1 text-gray-700 dark:text-gray-300">
-                                        ({course.rating.toFixed(1)})
-                                    </span>
-                                </div>
-                                <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
-                                    <MdOutlineDateRange className="mr-1" />
-                                    <span>{new Date(course.dateAdded).toLocaleDateString()}</span>
-                                </div>
-                            </div>
+                                <div className="p-6 space-y-4">
+                                    <div className="flex justify-between items-start">
+                                        <h3 className="text-xl font-bold text-gray-900 dark:text-white line-clamp-1">
+                                            {course.title}
+                                        </h3>
+                                        <span className={`px-2 py-1 text-xs rounded-full ${course.difficulty === 'Beginner' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' :
+                                            course.difficulty === 'Intermediate' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300' :
+                                                'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300'
+                                            }`}>
+                                            {course.difficulty}
+                                        </span>
+                                    </div>
 
-                            <div className="flex flex-col sm:flex-row gap-3 pt-2">
-                                <button
-                                    onClick={() => navigate(`/courses/${course.id}`)}
-                                    className="flex-1 px-4 py-2 bg-transparent border border-success text-success rounded-lg hover:bg-success/10 dark:hover:bg-success/20 transition-colors duration-200"
-                                >
-                                    View Details
-                                </button>
-                                <button
-                                    onClick={() => navigate(`/enroll/${course.id}`)}
-                                    className="flex-1 px-4 py-2 bg-success text-white rounded-lg hover:bg-success/80 transition-colors duration-200"
-                                >
-                                    Enroll Now
-                                </button>
-                            </div>
-                        </div>
-                    </motion.div>
-                ))}
-            </div>
+                                    <p className="text-gray-600 dark:text-gray-300 line-clamp-2">
+                                        {course.description}
+                                    </p>
 
-            <div className="text-center mt-12">
-                <button
-                    onClick={() => navigate('/courses')}
-                    className="px-6 py-3 bg-transparent border border-success text-success rounded-lg hover:bg-success/10 dark:hover:bg-success/20 transition-colors duration-200 font-medium"
-                >
-                    View All Courses
-                </button>
-            </div>
+                                    <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                                        <div className="flex items-center mr-4">
+                                            <img src={course.instructorImage} alt="" className="w-10 h-10 rounded-full mr-4" />
+                                            <span>{course.instructor}</span>
+                                        </div>
+                                        <div className="flex items-center">
+                                            <IoTimeOutline className="mr-1" />
+                                            <span>{course.duration}</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-center justify-between">
+                                        <div className="flex items-center">
+                                            {renderStars(course.rating)}
+                                            <span className="ml-1 text-gray-700 dark:text-gray-300">
+                                                ({course.rating.toFixed(1)})
+                                            </span>
+                                        </div>
+                                        <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                                            <MdOutlineDateRange className="mr-1" />
+                                            <span>{new Date(course.dateAdded).toLocaleDateString()}</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                                        <button
+                                            onClick={() => navigate(`/courses/${course.id}`)}
+                                            className="flex-1 px-4 py-2 bg-transparent border border-success text-success rounded-lg hover:bg-success/10 dark:hover:bg-success/20 transition-colors duration-200"
+                                        >
+                                            View Details
+                                        </button>
+                                        <button
+                                            onClick={() => navigate(`/enroll/${course.id}`)}
+                                            className="flex-1 px-4 py-2 bg-success text-white rounded-lg hover:bg-success/80 transition-colors duration-200"
+                                        >
+                                            Enroll Now
+                                        </button>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+
+                    <div className="text-center mt-12">
+                        <button
+                            onClick={() => navigate('/courses')}
+                            className="px-6 py-3 bg-transparent border border-success text-success rounded-lg hover:bg-success/10 dark:hover:bg-success/20 transition-colors duration-200 font-medium"
+                        >
+                            View All Courses
+                        </button>
+                    </div>
+                </>
+            ) : (
+                <div className="text-center py-12 text-gray-500">
+                    No courses available at the moment
+                </div>
+            )}
         </section>
     );
 };

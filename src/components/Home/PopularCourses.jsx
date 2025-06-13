@@ -1,107 +1,42 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router";
-import { FaSpinner, FaStar, FaRegStar, FaUserAlt, FaUsers } from "react-icons/fa";
+import {
+    FaSpinner,
+    FaStar,
+    FaRegStar,
+    FaUserAlt,
+    FaUsers,
+} from "react-icons/fa";
 import { IoTimeOutline } from "react-icons/io5";
 import { MdOutlineDateRange } from "react-icons/md";
-
-
-const dummyCourses = [
-    {
-        id: "1",
-        title: "Mastering React",
-        dateAdded: "2025-06-09",
-        image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
-        category: "Frontend",
-        difficulty: "Intermediate",
-        description: "Build scalable UIs with React & Hooks. Learn modern React patterns and best practices.",
-        rating: 4.8,
-        students: 5420,
-        duration: "24 hours",
-        instructor: "Sarah Johnson"
-    },
-    {
-        id: "2",
-        title: "Python for Data Science",
-        dateAdded: "2025-06-08",
-        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
-        category: "Data Science",
-        difficulty: "Beginner",
-        description: "Start your journey with data using Python. From basics to data visualization.",
-        rating: 4.6,
-        students: 3870,
-        duration: "18 hours",
-        instructor: "Michael Chen"
-    },
-    {
-        id: "3",
-        title: "Advanced Node.js",
-        dateAdded: "2025-06-07",
-        image: "https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1528&q=80",
-        category: "Backend",
-        difficulty: "Advanced",
-        description: "Deep dive into scalable Node.js applications with microservices architecture.",
-        rating: 4.9,
-        students: 2150,
-        duration: "30 hours",
-        instructor: "David Wilson"
-    },
-    {
-        id: "4",
-        title: "UI/UX Design Basics",
-        dateAdded: "2025-06-06",
-        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
-        category: "Design",
-        difficulty: "Beginner",
-        description: "Learn UI/UX fundamentals with real projects and case studies.",
-        rating: 4.7,
-        students: 6890,
-        duration: "15 hours",
-        instructor: "Emma Rodriguez"
-    },
-    {
-        id: "5",
-        title: "Machine Learning with TensorFlow",
-        dateAdded: "2025-06-05",
-        image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1465&q=80",
-        category: "AI",
-        difficulty: "Intermediate",
-        description: "Build ML models using TensorFlow and deploy them in production.",
-        rating: 4.5,
-        students: 4980,
-        duration: "28 hours",
-        instructor: "James Lee"
-    },
-    {
-        id: "6",
-        title: "Fullstack Web Development",
-        dateAdded: "2025-06-04",
-        image: "https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1528&q=80",
-        category: "Fullstack",
-        difficulty: "Advanced",
-        description: "Master frontend and backend development in one comprehensive course.",
-        rating: 4.9,
-        students: 7560,
-        duration: "40 hours",
-        instructor: "Sophia Martinez"
-    },
-];
+import { image } from "framer-motion/client";
 
 const PopularCourses = () => {
     const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
-        const timer = setTimeout(() => {
-            const sortedCourses = [...dummyCourses].sort(
-                (a, b) => b.students - a.students
-            );
-            setCourses(sortedCourses);
-            setLoading(false);
-        }, 1000);
+        const fetchCourses = async () => {
+            try {
+                const response = await fetch("/courses.json");
+                if (!response.ok) {
+                    throw new Error("Failed to fetch courses");
+                }
+                const data = await response.json();
+                const sortedCourses = data.sort((a, b) => b.students - a.students);
+                setCourses(sortedCourses);
+            } catch (err) {
+                setError(err.message);
+                console.error("Error fetching courses:", err);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-        return () => clearTimeout(timer);
+        fetchCourses();
     }, []);
 
     const renderStars = (rating) => {
@@ -134,6 +69,14 @@ const PopularCourses = () => {
         );
     }
 
+    if (error) {
+        return (
+            <div className="text-center py-12 text-red-500 font-medium">
+                {error}
+            </div>
+        );
+    }
+
     return (
         <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
             <motion.div
@@ -142,16 +85,17 @@ const PopularCourses = () => {
                 transition={{ duration: 0.5 }}
                 className="text-center mb-12"
             >
-                
                 <h2 className="text-3xl md:text-4xl font-bold mb-3">
                     Most Popular <span className="text-success">Courses</span>
                 </h2>
                 <p className="text-lg max-w-2xl mx-auto">
-                     Discover our most popular courses taught by industry experts. Join thousands of learners who have transformed their careers with our top-rated courses.
+                    Discover our most popular courses taught by industry experts. Join
+                    thousands of learners who have transformed their careers with our
+                    top-rated courses.
                 </p>
             </motion.div>
 
-            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                 {courses.map((course, idx) => (
                     <motion.div
                         key={course.id}
@@ -169,7 +113,7 @@ const PopularCourses = () => {
                                 loading="lazy"
                             />
                             <div className="absolute top-3 right-3 bg-success text-white text-xs font-bold px-2 py-1 rounded-full">
-                                {idx + 1 === 1 ? "Top Rated" : `#${idx + 1}`}
+                                {idx === 0 ? "Top Rated" : `#${idx + 1}`}
                             </div>
                             <div className="absolute bottom-3 left-3 bg-white dark:bg-gray-900 text-gray-800 dark:text-white text-xs font-bold px-2 py-1 rounded-full flex items-center">
                                 <FaUsers className="mr-1" />
@@ -182,10 +126,14 @@ const PopularCourses = () => {
                                 <h3 className="text-xl font-bold text-gray-900 dark:text-white line-clamp-1">
                                     {course.title}
                                 </h3>
-                                <span className={`px-2 py-1 text-xs rounded-full ${course.difficulty === 'Beginner' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' :
-                                    course.difficulty === 'Intermediate' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300' :
-                                        'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300'
-                                    }`}>
+                                <span
+                                    className={`px-2 py-1 text-xs rounded-full ${course.difficulty === "Beginner"
+                                        ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300"
+                                        : course.difficulty === "Intermediate"
+                                            ? "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300"
+                                            : "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300"
+                                        }`}
+                                >
                                     {course.difficulty}
                                 </span>
                             </div>
@@ -196,7 +144,7 @@ const PopularCourses = () => {
 
                             <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
                                 <div className="flex items-center mr-4">
-                                    <FaUserAlt className="mr-1" />
+                                    <img src={course.instructorImage} alt="" className="w-10 h-10 rounded-full mr-4" />
                                     <span>{course.instructor}</span>
                                 </div>
                                 <div className="flex items-center">
@@ -214,7 +162,13 @@ const PopularCourses = () => {
                                 </div>
                                 <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
                                     <MdOutlineDateRange className="mr-1" />
-                                    <span>{new Date(course.dateAdded).toLocaleDateString()}</span>
+                                    <span>
+                                        {new Date(course.dateAdded).toLocaleDateString("en-US", {
+                                            month: "short",
+                                            day: "numeric",
+                                            year: "numeric",
+                                        })}
+                                    </span>
                                 </div>
                             </div>
 
@@ -239,7 +193,7 @@ const PopularCourses = () => {
 
             <div className="text-center mt-12">
                 <button
-                    onClick={() => navigate('/courses')}
+                    onClick={() => navigate("/courses")}
                     className="px-6 py-3 bg-transparent border border-success text-success rounded-lg hover:bg-success/10 dark:hover:bg-success/20 transition-colors duration-200 font-medium"
                 >
                     View All Courses

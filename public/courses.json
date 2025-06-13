@@ -1,0 +1,200 @@
+[
+    {
+        "id": "1",
+        "title": "Mastering React",
+        "dateAdded": "2025-06-09",
+        "image": "https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+        "category": "Frontend",
+        "difficulty": "Intermediate",
+        "description": "Build scalable UIs with React & Hooks. Learn modern React patterns and best practices.",
+        "rating": 4.8,
+        "students": 1250,
+        "duration": "24 hours",
+        "instructor": "Sarah Johnson",
+        "instructorImage": "https://randomuser.me/api/portraits/women/62.jpg",
+        "curriculum": [
+            "Introduction to React",
+            "Components and Props",
+            "State Management",
+            "React Hooks",
+            "Project: Build a Dashboard UI"
+        ],
+        "reviews": [
+            {
+                "name": "Alice",
+                "comment": "Loved the real-world examples!",
+                "rating": 5
+            },
+            {
+                "name": "Tom",
+                "comment": "Well structured and easy to follow.",
+                "rating": 4.5
+            }
+        ]
+    },
+    {
+        "id": "2",
+        "title": "Python for Data Science",
+        "dateAdded": "2025-06-08",
+        "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+        "category": "Data Science",
+        "difficulty": "Beginner",
+        "description": "Start your journey with data using Python. From basics to data visualization.",
+        "rating": 4.6,
+        "students": 980,
+        "duration": "18 hours",
+        "instructor": "Michael Chen",
+        "instructorImage": "https://randomuser.me/api/portraits/men/32.jpg",
+        "curriculum": [
+            "Python Basics",
+            "Data Analysis with Pandas",
+            "Data Visualization with Matplotlib",
+            "Intro to NumPy",
+            "Final Data Science Project"
+        ],
+        "reviews": [
+            {
+                "name": "Nina",
+                "comment": "Clear and beginner-friendly.",
+                "rating": 4.5
+            },
+            {
+                "name": "Rob",
+                "comment": "Great pace and practical exercises.",
+                "rating": 4.7
+            }
+        ]
+    },
+    {
+        "id": "3",
+        "title": "Advanced Node.js",
+        "dateAdded": "2025-06-07",
+        "image": "https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1528&q=80",
+        "category": "Backend",
+        "difficulty": "Advanced",
+        "description": "Deep dive into scalable Node.js applications with microservices architecture.",
+        "rating": 4.9,
+        "students": 870,
+        "duration": "30 hours",
+        "instructor": "David Wilson",
+        "instructorImage": "https://randomuser.me/api/portraits/men/45.jpg",
+        "curriculum": [
+            "Node.js Internals",
+            "Express & Routing",
+            "Authentication & Authorization",
+            "Microservices with Docker",
+            "Production Deployment"
+        ],
+        "reviews": [
+            {
+                "name": "Carlos",
+                "comment": "Excellent for advanced users.",
+                "rating": 5
+            },
+            {
+                "name": "Sasha",
+                "comment": "Very comprehensive.",
+                "rating": 4.8
+            }
+        ]
+    },
+    {
+        "id": "4",
+        "title": "UI/UX Design Basics",
+        "dateAdded": "2025-06-06",
+        "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+        "category": "Design",
+        "difficulty": "Beginner",
+        "description": "Learn UI/UX fundamentals with real projects and case studies.",
+        "rating": 4.7,
+        "students": 1560,
+        "duration": "15 hours",
+        "instructor": "Emma Rodriguez",
+        "instructorImage": "https://randomuser.me/api/portraits/women/65.jpg",
+        "curriculum": [
+            "Design Principles",
+            "User Research",
+            "Wireframing & Prototyping",
+            "Tools: Figma/Adobe XD",
+            "Final Portfolio Project"
+        ],
+        "reviews": [
+            {
+                "name": "Liam",
+                "comment": "Easy to understand and practical.",
+                "rating": 4.6
+            },
+            {
+                "name": "Zara",
+                "comment": "Perfect intro for designers.",
+                "rating": 4.9
+            }
+        ]
+    },
+    {
+        "id": "5",
+        "title": "Machine Learning with TensorFlow",
+        "dateAdded": "2025-06-05",
+        "image": "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1465&q=80",
+        "category": "AI",
+        "difficulty": "Intermediate",
+        "description": "Build ML models using TensorFlow and deploy them in production.",
+        "rating": 4.5,
+        "students": 1120,
+        "duration": "28 hours",
+        "instructor": "James Lee",
+        "instructorImage": "https://randomuser.me/api/portraits/men/23.jpg",
+        "curriculum": [
+            "Intro to Machine Learning",
+            "TensorFlow Basics",
+            "Model Training",
+            "Evaluation & Tuning",
+            "Deploy to Production"
+        ],
+        "reviews": [
+            {
+                "name": "Aisha",
+                "comment": "Hands-on and practical.",
+                "rating": 4.5
+            },
+            {
+                "name": "John",
+                "comment": "Great for intermediate level.",
+                "rating": 4.4
+            }
+        ]
+    },
+    {
+        "id": "6",
+        "title": "Fullstack Web Development",
+        "dateAdded": "2025-06-04",
+        "image": "https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1528&q=80",
+        "category": "Fullstack",
+        "difficulty": "Advanced",
+        "description": "Master frontend and backend development in one comprehensive course.",
+        "rating": 4.9,
+        "students": 2040,
+        "duration": "40 hours",
+        "instructor": "Sophia Martinez",
+        "instructorImage": "https://randomuser.me/api/portraits/women/44.jpg",
+        "curriculum": [
+            "HTML, CSS, JS",
+            "React & Redux",
+            "Node.js & Express",
+            "MongoDB & REST API",
+            "Fullstack Capstone Project"
+        ],
+        "reviews": [
+            {
+                "name": "Emma",
+                "comment": "Covers everything in depth.",
+                "rating": 5
+            },
+            {
+                "name": "Ryan",
+                "comment": "A must-take for fullstack devs.",
+                "rating": 4.9
+            }
+        ]
+    }
+]
