@@ -252,19 +252,23 @@ const EditCourse = () => {
                             />
                         </div>
                         <div className="flex-1">
-                            <label className="block mb-1 font-semibold" htmlFor="students">
-                                Students Enrolled
+                            <label className="block mb-1 font-semibold" htmlFor="totalSeats">
+                                Total Seats
                             </label>
                             <input
-                                id="students"
-                                name="students"
+                                id="totalSeats"
+                                name="totalSeats"
                                 type="number"
-                                value={courseData.students}
+                                value={Number(courseData.totalSeats)}
                                 onChange={handleChange}
                                 className="w-full border p-2 rounded-md"
-                                min={0}
-                                disabled
+                                min={courseData.students} 
                             />
+                            {courseData.totalSeats < courseData.students && (
+                                <p className="text-red-500 text-sm mt-1">
+                                    Total seats cannot be less than enrolled students ({courseData.students})
+                                </p>
+                            )}
                         </div>
                     </div>
 

@@ -11,6 +11,7 @@ import { IoTimeOutline } from "react-icons/io5";
 import { MdOutlineDateRange } from "react-icons/md";
 import api from "../../API/axios";
 import { isCancel } from "axios";
+import EnrollButton from "../Enroll/EnrollButton";
 
 
 const PopularCourses = () => {
@@ -100,7 +101,7 @@ const PopularCourses = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: idx * 0.1 }}
                         whileHover={{ y: -5 }}
-                        className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:shadow-xl"
+                        className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-200 transition-all duration-300 hover:shadow-xl"
                     >
                         <div className="relative">
                             <img
@@ -112,7 +113,7 @@ const PopularCourses = () => {
                             <div className="absolute top-3 right-3 bg-success text-white text-xs font-bold px-2 py-1 rounded-full">
                                 {idx === 0 ? "Top Rated" : `#${idx + 1}`}
                             </div>
-                            <div className="absolute bottom-3 left-3 bg-white dark:bg-gray-900 text-gray-800 dark:text-white text-xs font-bold px-2 py-1 rounded-full flex items-center">
+                            <div className="absolute bottom-3 left-3 bg-success dark:text-white text-xs font-bold px-2 py-1 rounded-full flex items-center">
                                 <FaUsers className="mr-1" />
                                 <span>{formatNumber(course.students)}</span>
                             </div>
@@ -124,10 +125,10 @@ const PopularCourses = () => {
                                     {course.title}
                                 </h3>
                                 <span className={`px-2 py-1 text-xs rounded-full ${course.difficulty === "Beginner"
-                                        ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300"
-                                        : course.difficulty === "Intermediate"
-                                            ? "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300"
-                                            : "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300"
+                                    ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300"
+                                    : course.difficulty === "Intermediate"
+                                        ? "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300"
+                                        : "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300"
                                     }`}>
                                     {course.difficulty}
                                 </span>
@@ -169,17 +170,16 @@ const PopularCourses = () => {
 
                             <div className="flex flex-col sm:flex-row gap-3 pt-2">
                                 <button
-                                    onClick={() => navigate(`/courses/${course.id}`)}
+                                    onClick={() => navigate(`/courses/${course._id}`)}
                                     className="flex-1 px-4 py-2 bg-transparent border border-success text-success rounded-lg hover:bg-success/10 dark:hover:bg-success/20 transition-colors duration-200"
                                 >
                                     View Details
                                 </button>
-                                <button
-                                    onClick={() => navigate(`/enroll/${course.id}`)}
-                                    className="flex-1 px-4 py-2 bg-success text-white rounded-lg hover:bg-success/80 transition-colors duration-200"
-                                >
-                                    Enroll Now
-                                </button>
+                                <EnrollButton
+                                    courseId={course._id}
+                                    totalSeats={course.totalSeats}
+                                    students={course.students}
+                                ></EnrollButton>
                             </div>
                         </div>
                     </motion.div>

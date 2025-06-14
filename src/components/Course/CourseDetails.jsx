@@ -73,8 +73,12 @@ const CourseDetails = () => {
                             ))}
                         </div>
                     </div>
-                    
-                    <EnrollButton></EnrollButton>
+
+                    <EnrollButton
+                        courseId={course._id}
+                        totalSeats={course.totalSeats}
+                        students={course.students}
+                    ></EnrollButton>
                 </div>
             </div>
         </div>

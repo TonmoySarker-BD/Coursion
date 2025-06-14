@@ -6,6 +6,7 @@ import { IoTimeOutline } from "react-icons/io5";
 import { MdOutlineDateRange } from "react-icons/md";
 import { isCancel } from "axios";
 import api from "../../API/axios";
+import EnrollButton from "../Enroll/EnrollButton";
 
 const Courses = () => {
     const [courses, setCourses] = useState([]);
@@ -35,7 +36,7 @@ const Courses = () => {
             });
 
         return () => controller.abort();
-    }, []); 
+    }, []);
 
     const filtered = useMemo(() => {
         let list = [...courses];
@@ -67,6 +68,14 @@ const Courses = () => {
 
         return list;
     }, [courses, search, difficulty, sortBy]);
+
+    const bannerLabel = sortBy === "Rating"
+        ? "Top Rated"
+        : sortBy === "Enrollment"
+            ? "Most Enrolled"
+            : "Newest";
+
+
     const renderStars = (rating) => {
         const stars = [];
         const full = Math.floor(rating);
@@ -102,7 +111,7 @@ const Courses = () => {
 
     return (
         <main className="pb-20">
-            
+
             <section className="relative bg-success/5">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center">
                     <h1 className="text-4xl md:text-5xl font-extrabold">
@@ -146,6 +155,7 @@ const Courses = () => {
                                 className="h-12 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-success transition"
                                 value={difficulty}
                                 onChange={(e) => setDifficulty(e.target.value)}
+
                             >
                                 <option value="All">All Levels</option>
                                 <option value="Beginner">Beginner</option>
@@ -191,7 +201,7 @@ const Courses = () => {
                                         loading="lazy"
                                     />
                                     <div className="absolute top-3 right-3 bg-success text-xs font-bold px-2 py-1 rounded-full">
-                                        {idx < 3 ? "Trending" : `#${idx + 1}`}
+                                        {idx < 3 ? bannerLabel : `#${idx + 1}`}
                                     </div>
                                     <div className="absolute bottom-3 left-3 text-xs font-bold px-2 py-1 rounded-full flex items-center">
                                         <FaUsers className="mr-1" />
@@ -205,10 +215,10 @@ const Courses = () => {
                                         <h3 className="text-xl font-bold line-clamp-1">{c.title}</h3>
                                         <span
                                             className={`px-2 py-1 text-xs rounded-full ${c.difficulty === "Beginner"
-                                                    ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300"
-                                                    : c.difficulty === "Intermediate"
-                                                        ? "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300"
-                                                        : "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300"
+                                                ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300"
+                                                : c.difficulty === "Intermediate"
+                                                    ? "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300"
+                                                    : "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300"
                                                 }`}
                                         >
                                             {c.difficulty}
@@ -256,12 +266,11 @@ const Courses = () => {
                                         >
                                             View Details
                                         </button>
-                                        <button
-                                            onClick={() => navigate(`/enroll/${c._id}`)}
-                                            className="flex-1 px-4 py-2 bg-success text-white rounded-lg hover:bg-success/80 transition"
-                                        >
-                                            Enroll Now
-                                        </button>
+                                        <EnrollButton
+                                            courseId={c._id}
+                                            totalSeats={c.totalSeats}
+                                            students={c.students}
+                                        ></EnrollButton>
                                     </div>
                                 </div>
                             </motion.div>
