@@ -5,12 +5,13 @@ import {
     FaSpinner,
     FaStar,
     FaRegStar,
-    FaUserAlt,
     FaUsers,
 } from "react-icons/fa";
 import { IoTimeOutline } from "react-icons/io5";
 import { MdOutlineDateRange } from "react-icons/md";
-import { image } from "framer-motion/client";
+import api from "../../API/axios";
+import { isCancel } from "axios";
+
 
 const PopularCourses = () => {
     const [courses, setCourses] = useState([]);
@@ -19,24 +20,22 @@ const PopularCourses = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const fetchCourses = async () => {
-            try {
-                const response = await fetch("/courses.json");
-                if (!response.ok) {
-                    throw new Error("Failed to fetch courses");
-                }
-                const data = await response.json();
-                const sortedCourses = data.sort((a, b) => b.students - a.students);
-                setCourses(sortedCourses);
-            } catch (err) {
-                setError(err.message);
-                console.error("Error fetching courses:", err);
-            } finally {
-                setLoading(false);
-            }
-        };
+        const controller = new AbortController();
+        setLoading(true);
 
-        fetchCourses();
+        api.get("/popular-courses", { signal: controller.signal })
+            .then((res) => {
+                setCourses(res.data || []);
+                setLoading(false);
+            })
+            .catch((err) => {
+                if (isCancel(err)) return;
+                console.error("Fetch error:", err);
+                setError("Failed to load popular courses");
+                setLoading(false);
+            });
+
+        return () => controller.abort();
     }, []);
 
     const renderStars = (rating) => {
@@ -57,9 +56,7 @@ const PopularCourses = () => {
         return stars;
     };
 
-    const formatNumber = (num) => {
-        return new Intl.NumberFormat().format(num);
-    };
+    const formatNumber = (num) => new Intl.NumberFormat().format(num);
 
     if (loading) {
         return (
@@ -126,14 +123,12 @@ const PopularCourses = () => {
                                 <h3 className="text-xl font-bold text-gray-900 dark:text-white line-clamp-1">
                                     {course.title}
                                 </h3>
-                                <span
-                                    className={`px-2 py-1 text-xs rounded-full ${course.difficulty === "Beginner"
+                                <span className={`px-2 py-1 text-xs rounded-full ${course.difficulty === "Beginner"
                                         ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300"
                                         : course.difficulty === "Intermediate"
                                             ? "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300"
                                             : "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300"
-                                        }`}
-                                >
+                                    }`}>
                                     {course.difficulty}
                                 </span>
                             </div>

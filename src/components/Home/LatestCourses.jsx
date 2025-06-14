@@ -109,7 +109,7 @@ const LatestCourses = () => {
 
                                 <div className="p-6 space-y-4">
                                     <div className="flex justify-between items-start">
-                                        <h3 className="text-xl font-bold line-clamp-1">{c.title}</h3>
+                                        <h3 className="text-xl text-black font-bold line-clamp-1">{c.title}</h3>
                                         <span
                                             className={`px-2 py-1 text-xs rounded-full ${c.difficulty === "Beginner"
                                                     ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300"

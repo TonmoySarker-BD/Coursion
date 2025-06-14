@@ -8,6 +8,7 @@ import ForgotPassword from "./components/UserAuth/ForgotPassword";
 import Courses from "./components/Course/Courses";
 import CourseDetails from "./components/Course/CourseDetails";
 import AddCourse from "./components/AddCourses/AddCourse";
+import ManageCourse from "./components/ManageCourse/ManageCourse";
 
 export const router = createBrowserRouter([
     {
@@ -29,6 +30,10 @@ export const router = createBrowserRouter([
             {
                 path: "/add-course",
                 element: <AddCourse></AddCourse>
+            },
+            {
+                path: "/manage-courses",
+                element: <ManageCourse></ManageCourse>
             },
             {
                 path: "/signin",
