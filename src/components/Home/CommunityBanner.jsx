@@ -6,17 +6,12 @@ import { Link } from "react-router";
 const CommunityBanner = () => {
     return (
         <section className="relative py-16 px-4 sm:px-6 lg:px-8 overflow-hidden">
-            {/* Background image */}
             <img
                 src={bgbanner}
                 alt="Students collaborating"
                 className="absolute inset-0 w-full h-full object-cover"
             />
-
-            {/* White blur overlay */}
             <div className="absolute inset-0 bg-success/10 backdrop-blur-sm" />
-
-            {/* Main content */}
             <div className="relative z-10 max-w-7xl mx-auto">
                 <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
                     {/* Left Content */}

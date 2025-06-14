@@ -1,19 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { FaStar, FaUserAlt, FaClock, FaUsers } from "react-icons/fa";
+import api from "../../API/axios";
+import { isCancel } from "axios";
 
 const CourseDetails = () => {
     const { id } = useParams();
     const [course, setCourse] = useState(null);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
-        fetch("/courses.json")
-            .then((res) => res.json())
-            .then((data) => {
-                const selected = data.find((item) => item.id === id);
-                setCourse(selected);
+        const controller = new AbortController();
+        api.get(`/courses/${id}`, { signal: controller.signal })
+            .then((res) => setCourse(res.data))
+            .catch((err) => {
+                if (isCancel(err)) return;
+                setError(err || "Failed to load course");
+                console.error("Other error:", error);
             });
-    }, [id]);
+
+        return () => controller.abort();
+    }, [id, error]);
 
     if (!course) return <p className="text-center py-10">Loading...</p>;
 

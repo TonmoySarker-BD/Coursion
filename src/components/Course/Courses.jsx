@@ -1,14 +1,11 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router";
-import {
-    FaSpinner,
-    FaStar,
-    FaRegStar,
-    FaUsers,
-} from "react-icons/fa";
+import { FaSpinner, FaStar, FaRegStar, FaUsers } from "react-icons/fa";
 import { IoTimeOutline } from "react-icons/io5";
 import { MdOutlineDateRange } from "react-icons/md";
+import { isCancel } from "axios";
+import api from "../../API/axios";
 
 const Courses = () => {
     const [courses, setCourses] = useState([]);
@@ -21,26 +18,29 @@ const Courses = () => {
     const [sortBy, setSortBy] = useState("Newest");
 
     const navigate = useNavigate();
-
     useEffect(() => {
-        (async () => {
-            try {
-                const res = await fetch("/courses.json");
-                if (!res.ok) throw new Error("Failed to fetch courses");
-                const data = await res.json();
-                setCourses(data);
-            } catch (err) {
-                setError(err.message);
-            } finally {
+        const controller = new AbortController();
+        setLoading(true);
+        api
+            .get("/courses", { signal: controller.signal })
+            .then((res) => {
+                setCourses(res.data || []);
                 setLoading(false);
-            }
-        })();
-    }, []);
+            })
+            .catch((err) => {
+                if (isCancel(err)) return; // silent abort
+                console.error("Fetch error:", err);
+                setError("Failed to load courses");
+                setLoading(false);
+            });
+
+        return () => controller.abort();
+    }, []); 
 
     const filtered = useMemo(() => {
         let list = [...courses];
 
-        /* search filter */
+        // search
         if (search.trim()) {
             const term = search.toLowerCase();
             list = list.filter(
@@ -50,12 +50,10 @@ const Courses = () => {
             );
         }
 
-        /* difficulty filter */
-        if (difficulty !== "All") {
-            list = list.filter((c) => c.difficulty === difficulty);
-        }
+        // difficulty
+        if (difficulty !== "All") list = list.filter((c) => c.difficulty === difficulty);
 
-        /* sorting */
+        // sort
         switch (sortBy) {
             case "Enrollment":
                 list.sort((a, b) => b.students - a.students);
@@ -63,16 +61,12 @@ const Courses = () => {
             case "Rating":
                 list.sort((a, b) => b.rating - a.rating);
                 break;
-            default:
-                // Newest
-                list.sort(
-                    (a, b) => new Date(b.dateAdded) - new Date(a.dateAdded)
-                );
+            default: // Newest
+                list.sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded));
         }
 
         return list;
     }, [courses, search, difficulty, sortBy]);
-
     const renderStars = (rating) => {
         const stars = [];
         const full = Math.floor(rating);
@@ -86,21 +80,29 @@ const Courses = () => {
         return stars;
     };
     const nFmt = (n) => new Intl.NumberFormat().format(n);
-
     if (loading)
         return (
             <div className="flex justify-center items-center h-72">
                 <FaSpinner className="animate-spin text-success text-5xl" />
             </div>
         );
+
     if (error)
         return (
-            <div className="text-center py-12 text-red-500 font-medium">{error}</div>
+            <div className="text-center py-12 text-red-500 font-medium">
+                {error}
+                <button
+                    className="block mt-4 mx-auto px-4 py-2 bg-success text-white rounded-lg"
+                    onClick={() => window.location.reload()}
+                >
+                    Retry
+                </button>
+            </div>
         );
 
     return (
         <main className="pb-20">
-            {/* hero */}
+            
             <section className="relative bg-success/5">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center">
                     <h1 className="text-4xl md:text-5xl font-extrabold">
@@ -110,6 +112,8 @@ const Courses = () => {
                         Sharpen your skills with hundreds of expert‑led lessons. Filter,
                         sort, and find the perfect match for your learning journey.
                     </p>
+
+                    {/* Stats */}
                     <div className="mt-8 flex flex-wrap justify-center gap-4">
                         <div className="px-6 py-3 bg-white/10 rounded-lg shadow">
                             <span className="text-2xl font-bold text-success">
@@ -119,29 +123,27 @@ const Courses = () => {
                         </div>
                         <div className="px-6 py-3 bg-white/10 rounded-lg shadow">
                             <span className="text-2xl font-bold text-success">
-                                {nFmt(
-                                    courses.reduce((sum, c) => sum + (c.students || 0), 0)
-                                )}
+                                {nFmt(courses.reduce((sum, c) => sum + (c.students || 0), 0))}
                             </span>{" "}
                             learners
                         </div>
                     </div>
 
-                    {/* filters */}
-                    <section className="max-w-7xl my-6  mx-auto px-4 sm:px-6 lg:px-8 ">
+                    {/* Filters */}
+                    <section className="max-w-7xl my-6 mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="bg-white/50 text-black rounded-xl shadow-lg p-6 flex flex-col md:flex-row md:items-center gap-4">
-                            {/* search */}
+                            {/* Search */}
                             <input
                                 type="search"
                                 placeholder="Search by course or instructor"
-                                className="flex-1 h-12 px-4 py-2 border   rounded-lg focus:outline-none focus:ring-2 focus:ring-success   transition"
+                                className="flex-1 h-12 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-success transition"
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                             />
 
-                            {/* difficulty */}
+                            {/* Difficulty */}
                             <select
-                                className="h-12 px-4 py-2 border  rounded-lg focus:outline-none focus:ring-2 focus:ring-success   transition"
+                                className="h-12 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-success transition"
                                 value={difficulty}
                                 onChange={(e) => setDifficulty(e.target.value)}
                             >
@@ -151,9 +153,9 @@ const Courses = () => {
                                 <option value="Advanced">Advanced</option>
                             </select>
 
-                            {/* sort */}
+                            {/* Sort */}
                             <select
-                                className="h-12 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-success  transition"
+                                className="h-12 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-success transition"
                                 value={sortBy}
                                 onChange={(e) => setSortBy(e.target.value)}
                             >
@@ -166,27 +168,21 @@ const Courses = () => {
                 </div>
             </section>
 
-
-
-
-            {/* grid */}
             <section className="pt-14 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 {filtered.length === 0 ? (
-                    <p className="text-center ">
-                        No courses match your criteria.
-                    </p>
+                    <p className="text-center">No courses match your criteria.</p>
                 ) : (
                     <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                         {filtered.map((c, idx) => (
                             <motion.div
-                                key={c.id}
+                                key={c._id}
                                 initial={{ opacity: 0, y: 30 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: idx * 0.05 }}
                                 whileHover={{ y: -6 }}
-                                className="bg-white/10  rounded-xl shadow-md overflow-hidden border  transition-all hover:shadow-xl"
+                                className="bg-white/10 rounded-xl shadow-md overflow-hidden border transition-all hover:shadow-xl"
                             >
-                                {/* img */}
+                                {/* Image */}
                                 <div className="relative">
                                     <img
                                         src={c.image}
@@ -194,7 +190,7 @@ const Courses = () => {
                                         className="w-full h-48 object-cover"
                                         loading="lazy"
                                     />
-                                    <div className="absolute top-3 right-3 bg-success  text-xs font-bold px-2 py-1 rounded-full">
+                                    <div className="absolute top-3 right-3 bg-success text-xs font-bold px-2 py-1 rounded-full">
                                         {idx < 3 ? "Trending" : `#${idx + 1}`}
                                     </div>
                                     <div className="absolute bottom-3 left-3 text-xs font-bold px-2 py-1 rounded-full flex items-center">
@@ -203,31 +199,31 @@ const Courses = () => {
                                     </div>
                                 </div>
 
-                                {/* body */}
+                                {/* Card body */}
                                 <div className="p-6 space-y-4">
                                     <div className="flex justify-between items-start">
-                                        <h3 className="text-xl font-bold line-clamp-1">
-                                            {c.title}
-                                        </h3>
+                                        <h3 className="text-xl font-bold line-clamp-1">{c.title}</h3>
                                         <span
                                             className={`px-2 py-1 text-xs rounded-full ${c.difficulty === "Beginner"
-                                                ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300"
-                                                : c.difficulty === "Intermediate"
-                                                    ? "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300"
-                                                    : "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300"
+                                                    ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300"
+                                                    : c.difficulty === "Intermediate"
+                                                        ? "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300"
+                                                        : "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300"
                                                 }`}
                                         >
                                             {c.difficulty}
                                         </span>
                                     </div>
 
-                                    <p className="line-clamp-2">
-                                        {c.description}
-                                    </p>
+                                    <p className="line-clamp-2">{c.description}</p>
 
                                     <div className="flex items-center text-sm">
                                         <div className="flex items-center mr-4">
-                                            <img src={c.instructorImage} alt="" className="w-10 h-10 rounded-full mr-4" />
+                                            <img
+                                                src={c.instructorImage}
+                                                alt=""
+                                                className="w-10 h-10 rounded-full mr-4"
+                                            />
                                             <span>{c.instructor}</span>
                                         </div>
                                         <div className="flex items-center">
@@ -239,9 +235,7 @@ const Courses = () => {
                                     <div className="flex items-center justify-between">
                                         <div className="flex items-center">
                                             {renderStars(c.rating)}
-                                            <span className="ml-1">
-                                                ({c.rating.toFixed(1)})
-                                            </span>
+                                            <span className="ml-1">({c.rating.toFixed(1)})</span>
                                         </div>
                                         <div className="flex items-center text-sm">
                                             <MdOutlineDateRange className="mr-1" />
@@ -257,13 +251,13 @@ const Courses = () => {
 
                                     <div className="flex flex-col sm:flex-row gap-3 pt-2">
                                         <button
-                                            onClick={() => navigate(`/courses/${c.id}`)}
+                                            onClick={() => navigate(`/courses/${c._id}`)}
                                             className="flex-1 px-4 py-2 bg-transparent border border-success text-success rounded-lg hover:bg-success/10 dark:hover:bg-success/20 transition"
                                         >
                                             View Details
                                         </button>
                                         <button
-                                            onClick={() => navigate(`/enroll/${c.id}`)}
+                                            onClick={() => navigate(`/enroll/${c._id}`)}
                                             className="flex-1 px-4 py-2 bg-success text-white rounded-lg hover:bg-success/80 transition"
                                         >
                                             Enroll Now

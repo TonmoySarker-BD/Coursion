@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router";
-import { FaSpinner, FaStar, FaRegStar, FaUserAlt, FaClock } from "react-icons/fa";
+import { FaSpinner, FaStar, FaRegStar, FaUsers } from "react-icons/fa";
 import { IoTimeOutline } from "react-icons/io5";
 import { MdOutlineDateRange } from "react-icons/md";
+import { isCancel } from "axios";
+import api from "../../API/axios";
 
 const LatestCourses = () => {
     const [courses, setCourses] = useState([]);
@@ -12,63 +14,53 @@ const LatestCourses = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const fetchCourses = async () => {
-            try {
-                const response = await fetch('/courses.json');
-                if (!response.ok) {
-                    throw new Error('Failed to fetch courses');
-                }
-                const data = await response.json();
+        const controller = new AbortController();
+        setLoading(true);
 
-                // Sort by latest date (newest first)
-                const sortedCourses = data.sort(
-                    (a, b) => new Date(b.dateAdded) - new Date(a.dateAdded)
-                );
-                setCourses(sortedCourses);
-            } catch (err) {
-                setError(err.message);
-                console.error("Error fetching courses:", err);
-            } finally {
+        api
+            .get("/latest-courses", { signal: controller.signal })
+            .then((res) => {
+                setCourses(res.data || []);
                 setLoading(false);
-            }
-        };
+            })
+            .catch((err) => {
+                if (isCancel(err)) return;
+                console.error("Fetch error:", err);
+                setError("Failed to load latest courses");
+                setLoading(false);
+            });
 
-        fetchCourses();
+        return () => controller.abort();
     }, []);
 
     const renderStars = (rating) => {
         const stars = [];
-        const fullStars = Math.floor(rating);
-        const hasHalfStar = rating % 1 >= 0.5;
-
+        const full = Math.floor(rating);
+        const half = rating % 1 >= 0.5;
         for (let i = 1; i <= 5; i++) {
-            if (i <= fullStars) {
+            if (i <= full) stars.push(<FaStar key={i} className="text-yellow-400" />);
+            else if (i === full + 1 && half)
                 stars.push(<FaStar key={i} className="text-yellow-400" />);
-            } else if (i === fullStars + 1 && hasHalfStar) {
-                stars.push(<FaStar key={i} className="text-yellow-400" />);
-            } else {
-                stars.push(<FaRegStar key={i} className="text-yellow-400" />);
-            }
+            else stars.push(<FaRegStar key={i} className="text-yellow-400" />);
         }
-
         return stars;
     };
 
-    if (loading) {
+    const nFmt = (n) => new Intl.NumberFormat().format(n);
+
+    if (loading)
         return (
             <div className="flex justify-center items-center h-64">
                 <FaSpinner className="animate-spin text-success text-4xl" />
             </div>
         );
-    }
 
-    if (error) {
+    if (error)
         return (
             <div className="flex justify-center items-center h-64 text-red-500">
                 {error}
             </div>
         );
-    }
 
     return (
         <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
@@ -82,85 +74,100 @@ const LatestCourses = () => {
                     Latest <span className="text-success">Courses</span>
                 </h2>
                 <p className="text-lg max-w-2xl mx-auto">
-                    Explore our newest courses just added to the platform. Stay ahead in your learning journey with the latest content from top instructors.
+                    Explore our newest courses just added to the platform. Stay ahead in
+                    your learning journey with fresh content from top instructors.
                 </p>
             </motion.div>
 
-            {courses.length > 0 ? (
+            {courses.length ? (
                 <>
                     <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-                        {courses.map((course, idx) => (
+                        {courses.map((c, idx) => (
                             <motion.div
-                                key={course.id}
+                                key={c._id ?? c.id}
                                 initial={{ opacity: 0, y: 30 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: idx * 0.1 }}
                                 whileHover={{ y: -5 }}
-                                className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:shadow-xl"
+                                className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden border border-gray-200 dark:border-gray-700 transition hover:shadow-xl"
                             >
                                 <div className="relative">
                                     <img
-                                        src={course.image}
-                                        alt={course.title}
+                                        src={c.image}
+                                        alt={c.title}
                                         className="w-full h-48 object-cover"
                                         loading="lazy"
                                     />
                                     <div className="absolute top-3 right-3 bg-success text-white text-xs font-bold px-2 py-1 rounded-full">
                                         New
                                     </div>
+                                    <div className="absolute bottom-3 left-3 text-xs font-bold px-2 py-1 rounded-full flex items-center">
+                                        <FaUsers className="mr-1" />
+                                        <span>{nFmt(c.students)}</span>
+                                    </div>
                                 </div>
 
                                 <div className="p-6 space-y-4">
                                     <div className="flex justify-between items-start">
-                                        <h3 className="text-xl font-bold text-gray-900 dark:text-white line-clamp-1">
-                                            {course.title}
-                                        </h3>
-                                        <span className={`px-2 py-1 text-xs rounded-full ${course.difficulty === 'Beginner' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' :
-                                            course.difficulty === 'Intermediate' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300' :
-                                                'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300'
-                                            }`}>
-                                            {course.difficulty}
+                                        <h3 className="text-xl font-bold line-clamp-1">{c.title}</h3>
+                                        <span
+                                            className={`px-2 py-1 text-xs rounded-full ${c.difficulty === "Beginner"
+                                                    ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300"
+                                                    : c.difficulty === "Intermediate"
+                                                        ? "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300"
+                                                        : "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300"
+                                                }`}
+                                        >
+                                            {c.difficulty}
                                         </span>
                                     </div>
 
                                     <p className="text-gray-600 dark:text-gray-300 line-clamp-2">
-                                        {course.description}
+                                        {c.description}
                                     </p>
 
                                     <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
                                         <div className="flex items-center mr-4">
-                                            <img src={course.instructorImage} alt="" className="w-10 h-10 rounded-full mr-4" />
-                                            <span>{course.instructor}</span>
+                                            <img
+                                                src={c.instructorImage}
+                                                alt=""
+                                                className="w-10 h-10 rounded-full mr-4"
+                                            />
+                                            <span>{c.instructor}</span>
                                         </div>
                                         <div className="flex items-center">
                                             <IoTimeOutline className="mr-1" />
-                                            <span>{course.duration}</span>
+                                            <span>{c.duration}</span>
                                         </div>
                                     </div>
 
                                     <div className="flex items-center justify-between">
                                         <div className="flex items-center">
-                                            {renderStars(course.rating)}
-                                            <span className="ml-1 text-gray-700 dark:text-gray-300">
-                                                ({course.rating.toFixed(1)})
-                                            </span>
+                                            {renderStars(c.rating)}
+                                            <span className="ml-1">({c.rating.toFixed(1)})</span>
                                         </div>
-                                        <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                                        <div className="flex items-center text-sm">
                                             <MdOutlineDateRange className="mr-1" />
-                                            <span>{new Date(course.dateAdded).toLocaleDateString()}</span>
+                                            <span>
+                                                {new Date(c.dateAdded).toLocaleDateString("en-US", {
+                                                    month: "short",
+                                                    day: "numeric",
+                                                    year: "numeric",
+                                                })}
+                                            </span>
                                         </div>
                                     </div>
 
                                     <div className="flex flex-col sm:flex-row gap-3 pt-2">
                                         <button
-                                            onClick={() => navigate(`/courses/${course.id}`)}
-                                            className="flex-1 px-4 py-2 bg-transparent border border-success text-success rounded-lg hover:bg-success/10 dark:hover:bg-success/20 transition-colors duration-200"
+                                            onClick={() => navigate(`/courses/${c._id ?? c.id}`)}
+                                            className="flex-1 px-4 py-2 bg-transparent border border-success text-success rounded-lg hover:bg-success/10 dark:hover:bg-success/20 transition"
                                         >
                                             View Details
                                         </button>
                                         <button
-                                            onClick={() => navigate(`/enroll/${course.id}`)}
-                                            className="flex-1 px-4 py-2 bg-success text-white rounded-lg hover:bg-success/80 transition-colors duration-200"
+                                            onClick={() => navigate(`/enroll/${c._id ?? c.id}`)}
+                                            className="flex-1 px-4 py-2 bg-success text-white rounded-lg hover:bg-success/80 transition"
                                         >
                                             Enroll Now
                                         </button>
@@ -172,8 +179,8 @@ const LatestCourses = () => {
 
                     <div className="text-center mt-12">
                         <button
-                            onClick={() => navigate('/courses')}
-                            className="px-6 py-3 bg-transparent border border-success text-success rounded-lg hover:bg-success/10 dark:hover:bg-success/20 transition-colors duration-200 font-medium"
+                            onClick={() => navigate("/courses")}
+                            className="px-6 py-3 bg-transparent border border-success text-success rounded-lg hover:bg-success/10 dark:hover:bg-success/20 transition font-medium"
                         >
                             View All Courses
                         </button>
@@ -187,5 +194,4 @@ const LatestCourses = () => {
         </section>
     );
 };
-
 export default LatestCourses;

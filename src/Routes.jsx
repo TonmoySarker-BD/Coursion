@@ -7,6 +7,7 @@ import Register from "./components/UserAuth/Register";
 import ForgotPassword from "./components/UserAuth/ForgotPassword";
 import Courses from "./components/Course/Courses";
 import CourseDetails from "./components/Course/CourseDetails";
+import AddCourse from "./components/AddCourses/AddCourse";
 
 export const router = createBrowserRouter([
     {
@@ -24,6 +25,10 @@ export const router = createBrowserRouter([
             {
                 path: "/Courses/:id",
                 element: <CourseDetails></CourseDetails>
+            },
+            {
+                path: "/add-course",
+                element: <AddCourse></AddCourse>
             },
             {
                 path: "/signin",
