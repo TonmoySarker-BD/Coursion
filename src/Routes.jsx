@@ -9,6 +9,8 @@ import Courses from "./components/Course/Courses";
 import CourseDetails from "./components/Course/CourseDetails";
 import AddCourse from "./components/AddCourses/AddCourse";
 import ManageCourse from "./components/ManageCourse/ManageCourse";
+import MyCourse from "./components/MyCourse/MyCourse";
+import EditCourse from "./components/AddCourses/EditCourse";
 
 export const router = createBrowserRouter([
     {
@@ -32,8 +34,16 @@ export const router = createBrowserRouter([
                 element: <AddCourse></AddCourse>
             },
             {
+                path: "/my-courses",
+                element: <MyCourse></MyCourse>
+            },
+            {
                 path: "/manage-courses",
                 element: <ManageCourse></ManageCourse>
+            },
+            {
+                path: "/edit-course/:id",
+                element: <EditCourse></EditCourse>
             },
             {
                 path: "/signin",

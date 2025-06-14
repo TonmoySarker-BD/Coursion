@@ -3,6 +3,7 @@ import { useParams } from "react-router";
 import { FaStar, FaUserAlt, FaClock, FaUsers } from "react-icons/fa";
 import api from "../../API/axios";
 import { isCancel } from "axios";
+import EnrollButton from "../Enroll/EnrollButton";
 
 const CourseDetails = () => {
     const { id } = useParams();
@@ -72,10 +73,8 @@ const CourseDetails = () => {
                             ))}
                         </div>
                     </div>
-
-                    <button className="bg-success text-white px-6 py-2 rounded-full font-semibold transition">
-                        Enroll Now
-                    </button>
+                    
+                    <EnrollButton></EnrollButton>
                 </div>
             </div>
         </div>
