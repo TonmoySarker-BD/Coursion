@@ -4,7 +4,7 @@ import { AuthContext } from "../context/Auth/AuthContext";
 
 const api = axios.create({
   baseURL: "https://coursion-server-eight.vercel.app",
-  timeout: 5000,
+  timeout: 10000,
 });
 
 const useAxiosSecure = () => {

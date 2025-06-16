@@ -1,15 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { FaStar, FaUserAlt, FaClock, FaUsers } from "react-icons/fa";
 import { isCancel } from "axios";
 import EnrollButton from "../Enroll/EnrollButton";
 import useAxiosSecure from "../../API/axios";
+import ReviewForm from "../Review/ReviewForm";
+import ReviewList from "../Review/ReviewList";
+import { AuthContext } from "../../context/Auth/AuthContext";
 
 const CourseDetails = () => {
+    const { user } = use(AuthContext);
     const api = useAxiosSecure();
     const { id } = useParams();
     const [course, setCourse] = useState(null);
     const [error, setError] = useState(null);
+    const [enrolled, setEnrolled] = useState(false);
+
+
 
     useEffect(() => {
         const controller = new AbortController();
@@ -22,14 +29,22 @@ const CourseDetails = () => {
             });
 
         document.title = `${course ? course.title : "Course Details"}`;
+        if (!user?.accessToken) return;
+
+        api.get(`/enroll?courseId=${id}&userEmail=${user.email}`)
+            .then(({ data }) => {
+                setEnrolled(data.enrolled);
+            })
+            .catch(console.error);
+
         return () => controller.abort();
-    }, [id, error, api, course]);
+    }, [id, error, api, course, user]);
 
     if (!course)
         return <div className="max-w-5xl mx-auto py-10 px-4 text-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500 mx-auto"></div>
-        <p className="mt-4 text-gray-600">Loading your courses...</p>
-    </div>;
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500 mx-auto"></div>
+            <p className="mt-4 text-gray-600">Loading your courses...</p>
+        </div>;
 
     return (
         <div className="max-w-5xl mx-auto px-4 py-10">
@@ -63,22 +78,7 @@ const CourseDetails = () => {
                         </ul>
                     </div>
 
-                    <div className="mb-6">
-                        <h3 className="text-xl font-medium mb-2">Student Reviews</h3>
-                        <div className="space-y-2">
-                            {course.reviews.map((review, idx) => (
-                                <div key={idx} className="p-3 border rounded-md">
-                                    <p className="font-medium">{review.name}</p>
-                                    <p className="text-sm ">{review.comment}</p>
-                                    <p className="text-yellow-500">
-                                        {Array.from({ length: Math.round(review.rating) }, (_, i) => (
-                                            <FaStar key={i} className="inline" />
-                                        ))}
-                                    </p>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
+
 
                     <EnrollButton
                         courseId={course._id}
@@ -86,6 +86,23 @@ const CourseDetails = () => {
                         students={course.students}
                     ></EnrollButton>
                 </div>
+            </div>
+
+            <div className="space-y-10 mt-10">
+                {/* Review Form Section */}
+                <div className="text-center">
+                    {enrolled ? (
+                        <ReviewForm courseId={course._id} />
+                    ) : (
+                        <div className="p-6 bg-white/10 shadow-lg rounded-3xl max-w-7xl mx-auto">
+                            <p className="text-black text-2xl font-semibold mb-3">You must enroll in the course to leave a review.</p>
+                            
+                        </div>
+                    )}
+                </div>
+
+                {/* Reviews List Section */}
+                <ReviewList reviews={course.reviews} />
             </div>
         </div>
     );
