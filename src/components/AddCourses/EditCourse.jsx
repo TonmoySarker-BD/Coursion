@@ -12,6 +12,16 @@ const EditCourse = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
+
+    // Dynamic title setting
+    useEffect(() => {
+        document.title = "Coursion | Edit Course";
+    }, []);
+
+
+
+
+
     const [courseData, setCourseData] = useState({
         title: "",
         category: "",
@@ -131,8 +141,9 @@ const EditCourse = () => {
 
     if (loading) {
         return (
-            <div className="flex justify-center items-center h-64">
-                <FaSpinner className="animate-spin text-4xl text-blue-500" />
+            <div className="max-w-5xl mx-auto py-10 px-4 text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500 mx-auto"></div>
+                <p className="mt-4 text-gray-600">Loading your courses...</p>
             </div>
         );
     }
@@ -156,7 +167,8 @@ const EditCourse = () => {
                         }}
                     />
                     <div>
-                        <p className="font-bold text-xl md:text-2xl">{courseData.instructor}</p>
+                        <p className="font-bold text-xl md:text-2xl">{user?.displayName || 'Instructor Name'}</p>
+                        <p className="">{user?.email}</p>
                     </div>
                 </div>
 
@@ -260,10 +272,9 @@ const EditCourse = () => {
                                 id="totalSeats"
                                 name="totalSeats"
                                 type="number"
-                                value={Number(courseData.totalSeats)}
                                 onChange={handleChange}
                                 className="w-full border p-2 rounded-md"
-                                min={courseData.students} 
+                                min={courseData.students}
                             />
                             {courseData.totalSeats < courseData.students && (
                                 <p className="text-red-500 text-sm mt-1">
@@ -349,7 +360,7 @@ const EditCourse = () => {
                             disabled={submitting}
                             className="flex-1 bg-green-500 hover:bg-green-600 transition rounded-md py-3 font-semibold text-white flex justify-center items-center space-x-2"
                         >
-                            {submitting ? <FaSpinner className="animate-spin" /> : 'Update Course'}
+                            Update Course
                         </button>
                     </div>
                 </form>

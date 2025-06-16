@@ -12,6 +12,9 @@ import ManageCourse from "./components/ManageCourse/ManageCourse";
 import MyCourse from "./components/MyCourse/MyCourse";
 import EditCourse from "./components/AddCourses/EditCourse";
 import NotFoundPage from "./components/shared/NotFoundPage";
+import PrivateRoute from "./PrivateRoute";
+import Profile from "./components/Profile/Profile";
+import UpdateProfile from "./components/Profile/UpdateProfile";
 
 export const router = createBrowserRouter([
     {
@@ -57,7 +60,19 @@ export const router = createBrowserRouter([
             {
                 path: "/forgot-password",
                 element: <ForgotPassword></ForgotPassword>
-            }
+            },
+            {
+                path: "/Profile",
+                element: <PrivateRoute>
+                    <Profile></Profile>
+                </PrivateRoute>,
+            },
+            {
+                path: "/update-profile",
+                element: <PrivateRoute>
+                    <UpdateProfile></UpdateProfile>
+                </PrivateRoute>,
+            },
         ]
     },
     {

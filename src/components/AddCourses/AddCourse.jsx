@@ -9,6 +9,14 @@ const AddCourse = () => {
     const navigate = useNavigate();
     const { user } = useContext(AuthContext);
     const api = useAxiosSecure();
+
+    // Dynamic title setting
+    useEffect(() => {
+        document.title = "Coursion | Add Course";
+    }, []);
+
+
+
     const [courseData, setCourseData] = useState({
         title: '',
         category: 'Design',
@@ -132,6 +140,15 @@ const AddCourse = () => {
             setLoading(false);
         }
     };
+
+    if (loading) {
+        return (
+            <div className="max-w-5xl mx-auto py-10 px-4 text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500 mx-auto"></div>
+                <p className="mt-4 text-gray-600">Loading your courses...</p>
+            </div>
+        );
+    }
 
 
     return (
@@ -315,9 +332,9 @@ const AddCourse = () => {
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full bg-green-400 hover:bg-green-500 transition rounded-md py-3 font-semibold text-black flex justify-center items-center space-x-2"
+                        className="w-full bg-green-400 hover:bg-green-500 transition rounded-md py-3 font-semibold  flex justify-center items-center space-x-2"
                     >
-                        {loading ? <FaSpinner className="animate-spin" /> : 'Submit Course'}
+                        Submit Course
                     </button>
                 </form>
             </div>

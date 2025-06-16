@@ -21,10 +21,15 @@ const CourseDetails = () => {
                 console.error("Other error:", error);
             });
 
+        document.title = `${course ? course.title : "Course Details"}`;
         return () => controller.abort();
-    }, [id, error, api]);
+    }, [id, error, api, course]);
 
-    if (!course) return <p className="text-center py-10">Loading...</p>;
+    if (!course)
+        return <div className="max-w-5xl mx-auto py-10 px-4 text-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500 mx-auto"></div>
+        <p className="mt-4 text-gray-600">Loading your courses...</p>
+    </div>;
 
     return (
         <div className="max-w-5xl mx-auto px-4 py-10">

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Banner from './Banner';
 import LatestCourses from './LatestCourses';
 import PopularCourses from './PopularCourses';
@@ -7,6 +7,10 @@ import PlatformStats from './PlatformStats';
 import CommunityBanner from './CommunityBanner';
 
 const Home = () => {
+    // Dynamic title setting
+    useEffect(() => {
+        document.title = "Coursion | Home";
+    }, []);
     return (
         <div>
             <Banner></Banner>

@@ -3,7 +3,7 @@ import { useContext, useEffect } from "react";
 import { AuthContext } from "../context/Auth/AuthContext";
 
 const api = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: "https://coursion-server-eight.vercel.app",
   timeout: 5000,
 });
 

@@ -1,4 +1,4 @@
-import React, { use, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import authbg from "../../assets/auth-bg.svg";
 import { AuthContext } from "../../context/Auth/AuthContext";
 import Swal from "sweetalert2";
@@ -8,6 +8,11 @@ const ForgotPassword = () => {
     const { forgotPassword, setLoading } = use(AuthContext);
     const [email, setEmail] = useState("");
     const navigate = useNavigate();
+
+    // Dynamic document title
+    useEffect(() => {
+        document.title = "Forgot Password - Coursion";
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();

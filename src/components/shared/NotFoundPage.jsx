@@ -1,9 +1,14 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router";
 import { FaHome, FaSearch } from "react-icons/fa";
+import { useEffect } from "react";
 
 const NotFoundPage = () => {
     const navigate = useNavigate();
+    // Dynamic title setting
+    useEffect(() => {
+        document.title = "Page Not Found - Coursion";
+    }, []);
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-100 flex items-center justify-center p-4">

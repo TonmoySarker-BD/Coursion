@@ -31,10 +31,18 @@ export const AuthProvider = ({ children }) => {
         return signInWithEmailAndPassword(auth, email, password);
     }
 
-    const updateUser = (userInfo) => {
+    const updateUser = async (userInfo) => {
         setLoading(true);
-        return updateProfile(auth.currentUser, userInfo);
-    }
+        try {
+            await updateProfile(auth.currentUser, userInfo);
+        } catch (err) {
+            console.error("Failed to update profile:", err);
+            throw err;
+        } finally {
+            setLoading(false);
+        }
+    };
+
 
     const forgotPassword = (email) => {
         setLoading(true);
@@ -55,8 +63,9 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     if (loading) {
-        return <div className="flex justify-center items-center h-screen">
-            <span className="loading loading-spinner loading-xl text-success "></span>
+        return <div className="max-w-5xl mx-auto py-10 px-4 text-center">
+            <div className="animate-spin rounded-full h-24 w-24 border-t-4 border-b-4 border-green-500 mx-auto"></div>
+            <p className="mt-4 ">Loading User...</p>
         </div>;
     }
 

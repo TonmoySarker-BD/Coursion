@@ -15,6 +15,7 @@ const ManageCourse = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        document.title = "Manage Your Courses - Coursion";
         const controller = new AbortController();
         setLoading(true);
 

@@ -21,6 +21,7 @@ const Courses = () => {
 
     const navigate = useNavigate();
     useEffect(() => {
+        document.title = "All Courses - Coursion";
         const controller = new AbortController();
         setLoading(true);
         api
@@ -90,12 +91,14 @@ const Courses = () => {
         return stars;
     };
     const nFmt = (n) => new Intl.NumberFormat().format(n);
-    if (loading)
+     if (loading) {
         return (
-            <div className="flex justify-center items-center h-72">
-                <FaSpinner className="animate-spin text-success text-5xl" />
+            <div className="max-w-5xl mx-auto py-10 px-4 text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500 mx-auto"></div>
+                <p className="mt-4 text-gray-600">Loading your courses...</p>
             </div>
         );
+    }
 
     if (error)
         return (

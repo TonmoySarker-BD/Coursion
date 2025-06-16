@@ -1,4 +1,4 @@
-import React, { use, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { FaEye, FaEyeSlash, FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import authbg from "../../assets/auth-bg.svg";
@@ -13,6 +13,11 @@ const Register = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [passwordError, setPasswordError] = useState("");
+
+    // Dynamic document title
+    useEffect(() => {
+        document.title = "Register - Coursion";
+    }, []);
 
     const handleGoogleSignUp = () => {
         signInWithGoogle()

@@ -1,4 +1,4 @@
-import React, { use, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { FaEye, FaEyeSlash, FaGithub } from "react-icons/fa";
 import authbg from "../../assets/auth-bg.svg";
 import { FcGoogle } from "react-icons/fc";
@@ -11,6 +11,11 @@ const SignIn = () => {
     const location = useLocation();
     const { signInWithGoogle, signInWithGithub, signInUser, setLoading } = use(AuthContext);
     const [showPassword, setShowPassword] = useState(false);
+
+    // Dynamic document title
+    useEffect(() => {
+        document.title = "Sign In - Coursion";
+    }, []);
 
     const handleGoogleSignIn = () => {
         signInWithGoogle()
