@@ -21,6 +21,7 @@ const Navbar = () => {
         <>
             <li><Link to="/">Home</Link></li>
             <li><Link to="/courses">Courses</Link></li>
+            <li><Link to="/TeachOnCoursion"> Teach on coursion </Link></li>
             {user && <li><Link to="/my-courses">My Courses</Link></li>}
             {user && <li><Link to="/add-course">Add Course</Link></li>}
             {user && <li><Link to="/manage-courses">Manage Courses</Link></li>}

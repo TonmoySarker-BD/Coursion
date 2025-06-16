@@ -207,7 +207,7 @@ const Courses = () => {
                                     <div className="absolute top-3 right-3 bg-success text-xs font-bold px-2 py-1 rounded-full">
                                         {idx < 3 ? bannerLabel : `#${idx + 1}`}
                                     </div>
-                                    <div className="absolute bottom-3 left-3 text-xs font-bold px-2 py-1 rounded-full flex items-center">
+                                    <div className="absolute bottom-3 bg-success left-3 text-xs font-bold px-2 py-1 rounded-full flex items-center">
                                         <FaUsers className="mr-1" />
                                         <span>{nFmt(c.students)}</span>
                                     </div>

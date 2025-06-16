@@ -15,6 +15,7 @@ import NotFoundPage from "./components/shared/NotFoundPage";
 import PrivateRoute from "./PrivateRoute";
 import Profile from "./components/Profile/Profile";
 import UpdateProfile from "./components/Profile/UpdateProfile";
+import TeachOnCoursion from "./components/Teaching/TeachOnCoursion";
 
 export const router = createBrowserRouter([
     {
@@ -28,6 +29,10 @@ export const router = createBrowserRouter([
             {
                 path: "/Courses",
                 element: <Courses></Courses>
+            },
+            {
+                path: "/TeachOnCoursion",
+                element: <TeachOnCoursion></TeachOnCoursion>
             },
             {
                 path: "/Courses/:id",
