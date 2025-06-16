@@ -204,10 +204,31 @@ const AddCourse = () => {
                                 onChange={handleChange}
                                 className="w-full border p-2 text-black placeholder:text-black rounded-md"
                             >
+                                <option>Data Science</option>
+                                <option>AI & Machine Learning</option>
+                                <option>Cybersecurity</option>
+                                <option>Finance</option>
+                                <option>Accounting</option>
+                                <option>Human Resources</option>
+                                <option>Project Management</option>
+                                <option>Photography</option>
+                                <option>Video Editing</option>
+                                <option>Writing</option>
+                                <option>Language Learning</option>
+                                <option>Health & Fitness</option>
+                                <option>Personal Development</option>
+                                <option>Music</option>
+                                <option>Teaching</option>
+                                <option>Sales</option>
+                                <option>Engineering</option>
+                                <option>Architecture</option>
+                                <option>Fashion</option>
+                                <option>Cooking</option>
                                 <option>Design</option>
                                 <option>Development</option>
                                 <option>Marketing</option>
                                 <option>Business</option>
+                                <option>Agriculture</option>
                             </select>
                         </div>
 

@@ -35,19 +35,27 @@ export const router = createBrowserRouter([
             },
             {
                 path: "/add-course",
-                element: <AddCourse></AddCourse>
+                element: <PrivateRoute>
+                    <AddCourse></AddCourse>
+                </PrivateRoute>
             },
             {
                 path: "/my-courses",
-                element: <MyCourse></MyCourse>
+                element: <PrivateRoute>
+                    <MyCourse></MyCourse>
+                </PrivateRoute>
             },
             {
                 path: "/manage-courses",
-                element: <ManageCourse></ManageCourse>
+                element: <PrivateRoute>
+                    <ManageCourse></ManageCourse>
+                </PrivateRoute>
             },
             {
                 path: "/edit-course/:id",
-                element: <EditCourse></EditCourse>
+                element: <PrivateRoute>
+                    <EditCourse></EditCourse>
+                </PrivateRoute>
             },
             {
                 path: "/signin",

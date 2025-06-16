@@ -68,7 +68,7 @@ const MyCourse = () => {
                     Please log in to view your enrolled courses
                 </h2>
                 <button
-                    onClick={() => navigate("/login")}
+                    onClick={() => navigate("/signin")}
                     className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
                 >
                     Go to Login
