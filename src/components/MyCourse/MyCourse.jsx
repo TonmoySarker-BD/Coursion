@@ -36,7 +36,7 @@ const MyCourse = () => {
         return () => controller.abort();
     }, [user, api]);
 
-    const handleRemove = async (enrollmentId) => {
+    const handleRemove = async (courseId) => {
         const res = await Swal.fire({
             title: "Remove this enrollment?",
             text: "You will lose access to the course materials.",
@@ -52,8 +52,8 @@ const MyCourse = () => {
         if (!res.isConfirmed) return;
 
         try {
-            await api.delete(`/enroll/${enrollmentId}`);
-            setEnrollments((prev) => prev.filter((e) => e._id !== enrollmentId));
+            await api.delete(`/enroll?courseId=${courseId}&userEmail=${user.email}`);
+            setEnrollments((prev) => prev.filter((e) => e.course._id !== courseId));
             Swal.fire("Removed!", "Your enrollment has been deleted.", "success");
         } catch (err) {
             console.error("Remove enrollment error:", err);
@@ -160,7 +160,7 @@ const MyCourse = () => {
 
                                         <td className="px-6 py-4">
                                             <button
-                                                onClick={() => handleRemove(_id)}
+                                                onClick={() => handleRemove(course._id)}
                                                 className="p-2 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-lg transition-colors"
                                                 title="Remove Enrollment"
                                             >
