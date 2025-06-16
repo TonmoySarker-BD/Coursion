@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { FaStar, FaUserAlt, FaClock, FaUsers } from "react-icons/fa";
-import api from "../../API/axios";
 import { isCancel } from "axios";
 import EnrollButton from "../Enroll/EnrollButton";
+import useAxiosSecure from "../../API/axios";
 
 const CourseDetails = () => {
+    const api = useAxiosSecure();
     const { id } = useParams();
     const [course, setCourse] = useState(null);
     const [error, setError] = useState(null);
@@ -21,7 +22,7 @@ const CourseDetails = () => {
             });
 
         return () => controller.abort();
-    }, [id, error]);
+    }, [id, error, api]);
 
     if (!course) return <p className="text-center py-10">Loading...</p>;
 

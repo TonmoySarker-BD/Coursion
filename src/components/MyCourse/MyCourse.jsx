@@ -1,12 +1,13 @@
 import React, { use, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import Swal from "sweetalert2";
-import api from "../../API/axios";
 import { FaTrash, FaSpinner } from "react-icons/fa";
 import { AuthContext } from "../../context/Auth/AuthContext";
+import useAxiosSecure from "../../API/axios";
 
 const MyCourse = () => {
     const { user } = use(AuthContext);
+    const api = useAxiosSecure();
     const [enrollments, setEnrollments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -32,7 +33,7 @@ const MyCourse = () => {
             });
 
         return () => controller.abort();
-    }, [user]);
+    }, [user, api]);
 
     const handleRemove = async (enrollmentId) => {
         const res = await Swal.fire({

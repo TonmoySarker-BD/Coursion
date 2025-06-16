@@ -5,10 +5,11 @@ import { FaSpinner, FaStar, FaRegStar, FaUsers } from "react-icons/fa";
 import { IoTimeOutline } from "react-icons/io5";
 import { MdOutlineDateRange } from "react-icons/md";
 import { isCancel } from "axios";
-import api from "../../API/axios";
 import EnrollButton from "../Enroll/EnrollButton";
+import useAxiosSecure from "../../API/axios";
 
 const LatestCourses = () => {
+    const api = useAxiosSecure();
     const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -32,7 +33,7 @@ const LatestCourses = () => {
             });
 
         return () => controller.abort();
-    }, []);
+    }, [api]);
 
     const renderStars = (rating) => {
         const stars = [];

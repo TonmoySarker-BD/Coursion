@@ -11,6 +11,7 @@ import AddCourse from "./components/AddCourses/AddCourse";
 import ManageCourse from "./components/ManageCourse/ManageCourse";
 import MyCourse from "./components/MyCourse/MyCourse";
 import EditCourse from "./components/AddCourses/EditCourse";
+import NotFoundPage from "./components/shared/NotFoundPage";
 
 export const router = createBrowserRouter([
     {
@@ -59,4 +60,8 @@ export const router = createBrowserRouter([
             }
         ]
     },
+    {
+        path: "*",
+        element: <NotFoundPage></NotFoundPage>
+    }
 ]);

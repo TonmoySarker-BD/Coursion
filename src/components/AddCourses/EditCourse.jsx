@@ -2,11 +2,12 @@ import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, useParams } from "react-router";
 import { FaPlus, FaSpinner } from "react-icons/fa";
 import { AuthContext } from "../../context/Auth/AuthContext";
-import api from "../../API/axios";
 import Swal from "sweetalert2";
+import useAxiosSecure from "../../API/axios";
 
 const EditCourse = () => {
     const { user } = useContext(AuthContext);
+    const api = useAxiosSecure();
     const { id } = useParams();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
@@ -59,7 +60,7 @@ const EditCourse = () => {
         };
 
         fetchCourse();
-    }, [id, navigate, user]);
+    }, [id, navigate, user, api]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;

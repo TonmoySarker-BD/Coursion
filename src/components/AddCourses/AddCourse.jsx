@@ -1,13 +1,14 @@
 import React, { useState, useContext, useEffect, useRef } from 'react';
 import { AuthContext } from '../../context/Auth/AuthContext';
 import { FaPlus, FaSpinner } from 'react-icons/fa';
-import api from '../../API/axios';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router';
+import useAxiosSecure from '../../API/axios';
 
 const AddCourse = () => {
     const navigate = useNavigate();
     const { user } = useContext(AuthContext);
+    const api = useAxiosSecure();
     const [courseData, setCourseData] = useState({
         title: '',
         category: 'Design',

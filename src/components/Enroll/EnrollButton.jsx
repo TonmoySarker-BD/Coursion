@@ -3,10 +3,11 @@ import { FaSpinner } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
 import { AuthContext } from "../../context/Auth/AuthContext";
-import api from "../../API/axios";
+import useAxiosSecure from "../../API/axios";
 
 export default function EnrollButton({ courseId, totalSeats, students }) {
     const { user } = useContext(AuthContext);
+    const api = useAxiosSecure();
     const [enrolled, setEnrolled] = useState(false);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
@@ -14,12 +15,12 @@ export default function EnrollButton({ courseId, totalSeats, students }) {
     const seatsFull = students >= totalSeats;
 
     useEffect(() => {
-        if (!user) return;
+        if (!user?.accessToken) return;
         api
             .get(`/enroll?courseId=${courseId}&userEmail=${user.email}`)
             .then(({ data }) => setEnrolled(data.enrolled))
             .catch(console.error);
-    }, [user, courseId]);
+    }, [user,api, courseId]);
 
     const handleEnroll = async () => {
         if (!user) {

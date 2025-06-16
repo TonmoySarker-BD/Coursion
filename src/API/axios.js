@@ -1,14 +1,29 @@
 import axios from "axios";
+import { useContext, useEffect } from "react";
+import { AuthContext } from "../context/Auth/AuthContext";
 
 const api = axios.create({
   baseURL: "http://localhost:3000",
-  timeout: 5000, 
+  timeout: 5000,
 });
 
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-  if (token) config.headers.Authorization = `Bearer ${token}`;
-  return config;
-});
+const useAxiosSecure = () => {
+  const { user } = useContext(AuthContext);
 
-export default api;
+  useEffect(() => {
+    const requestInterceptor = api.interceptors.request.use((config) => {
+      if (user?.accessToken) {
+        config.headers.Authorization = `Bearer ${user.accessToken}`;
+      }
+      return config;
+    });
+
+    return () => {
+      api.interceptors.request.eject(requestInterceptor);
+    };
+  }, [user?.accessToken]);
+
+  return api;
+};
+
+export default useAxiosSecure;
