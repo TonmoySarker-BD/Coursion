@@ -97,7 +97,7 @@ const PopularCourses = () => {
 
             <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                 {courses.map((course, idx) => (
-                    <motion.div
+                    <motion.div onClick={() => navigate(`/courses/${course._id}`)}
                         key={course.id}
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -113,7 +113,7 @@ const PopularCourses = () => {
                                 loading="lazy"
                             />
                             <div className="absolute top-3 right-3 bg-success text-white text-xs font-bold px-2 py-1 rounded-full">
-                                {idx === 0 ? "Top Rated" : `#${idx + 1}`}
+                                {idx < 3 ? "Most Enrolled" : `#${idx + 1}`}
                             </div>
                             <div className="absolute bottom-3 left-3 bg-success dark:text-white text-xs font-bold px-2 py-1 rounded-full flex items-center">
                                 <FaUsers className="mr-1" />
@@ -171,12 +171,6 @@ const PopularCourses = () => {
                             </div>
 
                             <div className="flex flex-col sm:flex-row gap-3 pt-2">
-                                <button
-                                    onClick={() => navigate(`/courses/${course._id}`)}
-                                    className="flex-1 px-4 py-2 bg-transparent border border-success text-success rounded-lg hover:bg-success/10 dark:hover:bg-success/20 transition-colors duration-200"
-                                >
-                                    View Details
-                                </button>
                                 <EnrollButton
                                     courseId={course._id}
                                     totalSeats={course.totalSeats}

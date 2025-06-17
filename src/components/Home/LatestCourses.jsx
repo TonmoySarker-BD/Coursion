@@ -50,7 +50,7 @@ const LatestCourses = () => {
 
     const nFmt = (n) => new Intl.NumberFormat().format(n);
 
-     if (loading) {
+    if (loading) {
         return (
             <div className="max-w-5xl mx-auto py-10 px-4 text-center">
                 <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500 mx-auto"></div>
@@ -87,7 +87,7 @@ const LatestCourses = () => {
                 <>
                     <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
                         {courses.map((c, idx) => (
-                            <motion.div
+                            <motion.div onClick={() => navigate(`/courses/${c._id}`)}
                                 key={c._id ?? c.id}
                                 initial={{ opacity: 0, y: 30 }}
                                 animate={{ opacity: 1, y: 0 }}
@@ -163,12 +163,6 @@ const LatestCourses = () => {
                                     </div>
 
                                     <div className="flex flex-col sm:flex-row gap-3 pt-2">
-                                        <button
-                                            onClick={() => navigate(`/courses/${c._id}`)}
-                                            className="flex-1 px-4 py-2 bg-transparent border border-success text-success rounded-lg hover:bg-success/10 dark:hover:bg-success/20 transition"
-                                        >
-                                            View Details
-                                        </button>
                                         <EnrollButton
                                             courseId={c._id}
                                             totalSeats={c.totalSeats}

@@ -57,16 +57,63 @@ const CourseDetails = () => {
 
                 <div className="p-6">
                     <h2 className="text-3xl font-semibold mb-2">{course.title}</h2>
-                    <p className="text-sm mb-4">{course.category} • {course.difficulty}</p>
+                    <div className="flex items-center justify-between mb-4">
+                        {/* Rating */}
+                        <div className="flex items-center gap-2">
+                            <div className="flex items-center">
+                                {[...Array(5)].map((_, i) => (
+                                    i < Math.floor(course.rating) ? (
+                                        <FaStar key={i} className="text-yellow-400 text-sm" />
+                                    ) : (
+                                        <FaStar key={i} className="text-gray-300 text-sm" />
+                                    )
+                                ))}
+                            </div>
+                            <span className="font-medium text-gray-800">
+                                {course.rating.toFixed(1)} ({course.reviews?.length || 0} reviews)
+                            </span>
+                        </div>
+                        {/* Duration */}
+                        <div className="flex items-center gap-2 text-gray-600">
+                            <FaClock className="text-purple-500" />
+                            <span>{course.duration}</span>
+                        </div>
+                    </div>
+
+
+
+                    <p className="text-lg font-semibold mb-4"> • {course.category} • {course.difficulty}</p>
+
+
                     <p className=" mb-4">{course.description}</p>
 
-                    <div className="flex items-center gap-4 text-sm flex-wrap mb-6">
-                        <div className="flex items-center gap-1"><FaUserAlt /> {course.instructor}</div>
-                        <div className="flex items-center gap-1"><FaUsers /> {course.students} Students</div>
-                        <div className="flex items-center gap-1"><FaClock /> {course.duration}</div>
-                        <div className="flex items-center gap-1">
-                            <FaStar className="text-yellow-500" /> {course.rating}
+                    <div className="flex items-center gap-6 flex-wrap mb-8 py-4 border-b border-gray-100">
+                        {/* Instructor */}
+                        <div className="flex items-center gap-2">
+                            <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-success shadow-sm">
+                                <img
+                                    src={course.instructorImage}
+                                    alt={course.instructor}
+                                    className="w-full h-full object-cover"
+
+                                />
+                            </div>
+                            <div className="flex flex-col">
+
+                                <span className="font-bold text-3xl">{course.instructor}</span>
+                                {/* Students */}
+                                <div className="flex items-center gap-2 text-gray-600">
+                                    <FaUsers className="text-blue-500" />
+                                    <span>{course.students.toLocaleString()} Students</span>
+                                </div>
+                            </div>
                         </div>
+
+
+
+
+
+
                     </div>
 
                     <div className="mb-6">
@@ -96,7 +143,7 @@ const CourseDetails = () => {
                     ) : (
                         <div className="p-6 bg-white/10 shadow-lg rounded-3xl max-w-7xl mx-auto">
                             <p className="text-black text-2xl font-semibold mb-3">You must enroll in the course to leave a review.</p>
-                            
+
                         </div>
                     )}
                 </div>

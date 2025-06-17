@@ -65,7 +65,7 @@ const Courses = () => {
                 list.sort((a, b) => b.rating - a.rating);
                 break;
             default: // Newest
-                list.sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded));
+                list.sort((a, b) => new Date(b.createdBy.timestamp) - new Date(a.createdBy.timestamp));
         }
 
         return list;
