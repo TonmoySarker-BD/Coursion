@@ -7,6 +7,9 @@ import HowToBegin from './HowToBegin';
 
 
 const TeachOnCoursion = () => {
+
+    // Dynamic title
+    document.title = "Teach on Coursion - Share Your Knowledge and Earn Money";
     // Reasons data
     const reasons = [
         {

@@ -163,11 +163,12 @@ const LatestCourses = () => {
                                     </div>
 
                                     <div className="flex flex-col sm:flex-row gap-3 pt-2">
-                                        <EnrollButton
-                                            courseId={c._id}
-                                            totalSeats={c.totalSeats}
-                                            students={c.students}
-                                        ></EnrollButton>
+                                        <button
+                                            onClick={() => navigate(`/courses/${c._id}`)}
+                                            className="flex-1 px-4 py-2  border border-success rounded-lg bg-success hover:bg-success/90 transition"
+                                        >
+                                            View Details
+                                        </button>
                                     </div>
                                 </div>
                             </motion.div>

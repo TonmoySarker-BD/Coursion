@@ -26,7 +26,7 @@ const Register = () => {
                     icon: "success",
                     title: "Signed in with Google",
                     showConfirmButton: false,
-                    timer: 2000
+                    timer: 1000
                 });
                 navigate(location.state?.from?.pathname || '/');
             })
@@ -37,7 +37,7 @@ const Register = () => {
                     title: 'Google Sign-in Failed',
                     text: getErrorMessage(err.code),
                     showConfirmButton: false,
-                    timer: 2000
+                    timer: 1000
                 });
             });
     };
@@ -49,7 +49,7 @@ const Register = () => {
                     icon: "success",
                     title: "Signed in with GitHub",
                     showConfirmButton: false,
-                    timer: 2000
+                    timer: 1000
                 });
                 navigate(location.state?.from?.pathname || '/');
             })
@@ -162,7 +162,7 @@ const Register = () => {
 
     return (
         <div className="flex items-center justify-center mx-[5%] py-16">
-            <div className="grid grid-cols-1 lg:grid-cols-2 w-full max-w-5xl bg-base-100 rounded-2xl shadow-lg border border-gray-300 overflow-hidden">
+            <div className="grid grid-cols-1 lg:grid-cols-2 w-full max-w-5xl bg-base-100 rounded-2xl shadow-lg">
 
                 {/* Left Image */}
                 <div

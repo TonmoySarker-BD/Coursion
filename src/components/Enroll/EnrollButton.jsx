@@ -12,18 +12,25 @@ export default function EnrollButton({ courseId, totalSeats, students }) {
 
     const [enrolled, setEnrolled] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [seats, setSeats] = useState(students); // Track seats locally
 
-    const seatsLeft = totalSeats - students;
+    const seatsLeft = totalSeats - seats;
     const seatsFull = seatsLeft <= 0;
 
     useEffect(() => {
-        if (!user?.accessToken) return;
-        api
-            .get(`/enroll?courseId=${courseId}&userEmail=${user.email}`)
-            .then(({ data }) => {
+        const checkEnrollment = async () => {
+            if (!user?.accessToken) return;
+            try {
+                const { data } = await api.get(`/enroll?courseId=${courseId}&userEmail=${user.email}`);
                 setEnrolled(data.enrolled);
-            })
-            .catch(console.error);
+                if (data.students !== undefined) {
+                    setSeats(data.students);
+                }
+            } catch (err) {
+                console.error("Enrollment check error:", err);
+            }
+        };
+        checkEnrollment();
     }, [user, api, courseId]);
 
     const handleClick = async () => {
@@ -46,7 +53,16 @@ export default function EnrollButton({ courseId, totalSeats, students }) {
                 setLoading(true);
                 await api.delete(`/enroll?courseId=${courseId}&userEmail=${user.email}`);
                 setEnrolled(false);
-                Swal.fire("Removed", "Your enrollment has been deleted.", "success");
+                setSeats(prev => prev - 1); // Decrement seat count
+                await Swal.fire(
+                    {
+                icon: 'success',
+                title: 'Removed',
+                text: 'Your enrollment has been deleted.',
+                showConfirmButton: false,
+                timer: 2000
+            }
+            );
             } catch (err) {
                 Swal.fire("Error", err.response?.data?.message || "Failed", "error");
             } finally {
@@ -70,11 +86,38 @@ export default function EnrollButton({ courseId, totalSeats, students }) {
 
         try {
             setLoading(true);
-            await api.post("/enroll", { courseId, userEmail: user.email });
+            const response = await api.post("/enroll", {
+                courseId,
+                userEmail: user?.email
+            });
+
             setEnrolled(true);
-            Swal.fire("Enrolled!", "Welcome aboard 🎉", "success");
+            setSeats(prev => prev + 1); // Increment seat count
+
+            await Swal.fire({
+                title: "Enrolled Successfully!",
+                text: response?.data?.message || "Welcome aboard 🎉",
+                icon: "success",
+                timer: 2000,
+                showConfirmButton: false
+            });
+
         } catch (err) {
-            Swal.fire("Error", err.response?.data?.message || "Failed", "error");
+            console.error("Enrollment error:", err);
+            let errorMessage = "Failed to enroll in the course";
+            if (err.response) {
+                errorMessage = err.response.data?.message ||
+                    err.response.statusText ||
+                    "Server error occurred";
+            } else if (err.request) {
+                errorMessage = "No response from server. Please check your connection.";
+            }
+            await Swal.fire({
+                title: "Enrollment Failed",
+                text: errorMessage,
+                icon: "error",
+                confirmButtonColor: "#d33"
+            });
         } finally {
             setLoading(false);
         }
@@ -87,7 +130,7 @@ export default function EnrollButton({ courseId, totalSeats, students }) {
             </div>
         );
 
-    const seatsBadge = !enrolled && (
+    const seatsBadge = !enrolled && seatsLeft > 0 && (
         <span className="ml-2 text-xs bg-white/20 px-2 py-0.5 rounded-full">
             {seatsLeft} left
         </span>
@@ -99,9 +142,10 @@ export default function EnrollButton({ courseId, totalSeats, students }) {
     return (
         <button
             onClick={handleClick}
-            disabled={loading}
+            disabled={loading || (seatsFull && !enrolled)}
             className={`flex-1 px-4 py-2 text-white rounded-lg transition
-        ${enrolled ? "bg-red-500 hover:bg-red-600" : "bg-success hover:bg-success/90"}`}
+                ${enrolled ? "bg-red-500 hover:bg-red-600" : "bg-success hover:bg-success/90"}
+                ${(seatsFull && !enrolled) ? "opacity-50 cursor-not-allowed" : ""}`}
         >
             {loading && <FaSpinner className="animate-spin mr-2" />}
             {label}

@@ -91,7 +91,7 @@ const Courses = () => {
         return stars;
     };
     const nFmt = (n) => new Intl.NumberFormat().format(n);
-     if (loading) {
+    if (loading) {
         return (
             <div className="max-w-5xl mx-auto py-10 px-4 text-center">
                 <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500 mx-auto"></div>
@@ -188,7 +188,7 @@ const Courses = () => {
                 ) : (
                     <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                         {filtered.map((c, idx) => (
-                            <motion.div
+                            <motion.div onClick={() => navigate(`/courses/${c._id}`)}
                                 key={c._id}
                                 initial={{ opacity: 0, y: 30 }}
                                 animate={{ opacity: 1, y: 0 }}
@@ -266,15 +266,10 @@ const Courses = () => {
                                     <div className="flex flex-col sm:flex-row gap-3 pt-2">
                                         <button
                                             onClick={() => navigate(`/courses/${c._id}`)}
-                                            className="flex-1 px-4 py-2 bg-transparent border border-success text-success rounded-lg hover:bg-success/10 dark:hover:bg-success/20 transition"
+                                            className="flex-1 px-4 py-2  border border-success rounded-lg bg-success hover:bg-success/90 transition"
                                         >
                                             View Details
                                         </button>
-                                        <EnrollButton
-                                            courseId={c._id}
-                                            totalSeats={c.totalSeats}
-                                            students={c.students}
-                                        ></EnrollButton>
                                     </div>
                                 </div>
                             </motion.div>

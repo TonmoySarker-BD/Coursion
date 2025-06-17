@@ -47,11 +47,11 @@ const PopularCourses = () => {
 
         for (let i = 1; i <= 5; i++) {
             if (i <= fullStars) {
-                stars.push(<FaStar key={i} className="text-yellow-400" />);
+                stars.push(<FaStar key={`full-${i}`} className="text-yellow-400" />);
             } else if (i === fullStars + 1 && hasHalfStar) {
-                stars.push(<FaStar key={i} className="text-yellow-400" />);
+                stars.push(<FaStar key={`half-${i}`} className="text-yellow-400" />);
             } else {
-                stars.push(<FaRegStar key={i} className="text-yellow-400" />);
+                stars.push(<FaRegStar key={`empty-${i}`} className="text-yellow-400" />);
             }
         }
 
@@ -60,7 +60,7 @@ const PopularCourses = () => {
 
     const formatNumber = (num) => new Intl.NumberFormat().format(num);
 
-     if (loading) {
+    if (loading) {
         return (
             <div className="max-w-5xl mx-auto py-10 px-4 text-center">
                 <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500 mx-auto"></div>
@@ -97,13 +97,14 @@ const PopularCourses = () => {
 
             <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                 {courses.map((course, idx) => (
-                    <motion.div onClick={() => navigate(`/courses/${course._id}`)}
-                        key={course.id}
+                    <motion.div
+                        key={course._id}
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: idx * 0.1 }}
                         whileHover={{ y: -5 }}
                         className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-200 transition-all duration-300 hover:shadow-xl"
+                        onClick={() => navigate(`/courses/${course._id}`)}
                     >
                         <div className="relative">
                             <img
@@ -171,11 +172,12 @@ const PopularCourses = () => {
                             </div>
 
                             <div className="flex flex-col sm:flex-row gap-3 pt-2">
-                                <EnrollButton
-                                    courseId={course._id}
-                                    totalSeats={course.totalSeats}
-                                    students={course.students}
-                                ></EnrollButton>
+                                <button
+                                    onClick={() => navigate(`/courses/${c._id}`)}
+                                    className="flex-1 px-4 py-2  border border-success rounded-lg bg-success hover:bg-success/90 transition"
+                                >
+                                    View Details
+                                </button>
                             </div>
                         </div>
                     </motion.div>
