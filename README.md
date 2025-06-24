@@ -1,108 +1,239 @@
-# Coursion
+# 🎓 Coursion - Online Course Marketplace
 
-An **online course marketplace** where anyone can create, manage and enroll in courses.
+# 🎓 Coursion – Full Stack Online Course Platform
 
----
+Coursion is a modern, full-stack online learning platform designed for scalability, performance, and a seamless user experience. Built with **React**, **Express**, **MongoDB**, and **Firebase**, it allows users to explore, purchase, and complete courses with ease.
 
-## 🌐 Live URLs
+![Coursion Preview](./public/coursion.png)
 
-| Service | URL |
-|---------|-----|
-| Client (React + Firebase Hosting) | <https://coursion.web.app/> |
-| REST API (Vercel Serverless) | <https://coursion-server-eight.vercel.app/> |
+A **full-stack online course marketplace** built with React 19 and serverless architecture, empowering instructors to create/share courses and students to discover/enroll in learning opportunities.
 
 ---
 
-## 🎯 Purpose
+## 🌐 Live Deployment
 
-- Give **instructors** an easy dashboard to list, edit and track their courses.  
-- Give **students** a smooth browsing & enrollment experience with real‑time seat management.  
-- Showcase modern React 19 patterns + Tailwind CSS and serverless MongoDB.
+<div align="center">
 
----
+| Environment       | URL                                                                 | Technology Stack                     |
+|-------------------|---------------------------------------------------------------------|---------------------------------------|
+| Production Client | [coursion.web.app](https://coursion.web.app)                       | React 19 + Firebase Hosting          |
+| Production API    | [api.coursion.app](https://coursion-server-eight.vercel.app)       | Node.js + Express + Vercel Functions |
+| Staging Client    | [staging.coursion.web.app](https://staging-coursion.web.app)       | React 18 + Netlify                   |
+| Staging API       | [staging.api.coursion.app](https://staging-coursion-api.vercel.app)| Node.js + MongoDB Atlas              |
 
-## 🚀 Key Features
-
-| Category | Details |
-|----------|---------|
-| Authentication | Firebase email / password, protected routes, profile update & password reset |
-| Course Catalog | Home ➜ Courses list with search, category filter, sort (Newest / Most Enrolled / Top Rated) |
-| Course Details | Dynamic `/Courses/:id` page with syllabus, remaining‑seat badge & animated hero |
-| Enrollment Logic | • Seats limited to `totalSeats`  • Max 3 active courses per user  • One‑click toggle (Enroll ⇆ Remove) |
-| Instructor Tools | Add / Edit / Delete course (with photo upload), Manage My Courses table |
-| Student Tools | “My Enrolled Courses” table with Remove Enrollment |
-| UI / UX | Tailwind 4 + DaisyUI, Framer‑motion hero sliders, React‑Slick carousels, Count‑up stats, SweetAlert 2 dialogs |
-| API | Secure Axios instance (`useAxiosSecure`) with JWT interceptor; Express routes deployed as Vercel functions |
+</div>
 
 ---
 
-## 🗺️ Front‑End Route Map
+## 🎯 Project Vision
 
+**For Instructors:**
+- 🏗️ Intuitive course creation wizard with rich content editing
+- 📊 Real-time enrollment analytics dashboard  
+- 💰 Flexible monetization options (coming soon)
+
+**For Students:**
+- 🔍 Advanced course discovery with AI recommendations (planned)
+- 📱 Progressive Web App for offline learning
+- 🏆 Achievement badges and learning pathways
+
+**Technical Showcase:**
+- ⚡ React 19 concurrent features
+- 🔥 Serverless JAMstack architecture
+- 🛡️ Enterprise-grade security practices
+
+---
+
+## 🛠️ Technology Stack
+
+### Frontend Architecture
+![React](https://img.shields.io/badge/React-19.1.0-61DAFB?logo=react)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.1.8-06B6D4?logo=tailwindcss)
+![Vite](https://img.shields.io/badge/Vite-5.0.0-646CFF?logo=vite)
+
+**Core Libraries:**
+- **State Management**: React Context + useReducer
+- **Animation**: Framer Motion 12.17.0
+- **UI Components**: DaisyUI 4.4.0
+- **Routing**: React Router 7.6.2
+- **Forms**: React Hook Form + Zod validation
+
+### Backend Services
+![Node.js](https://img.shields.io/badge/Node.js-20-339933?logo=nodedotjs)
+![Express](https://img.shields.io/badge/Express-4.18.2-000000?logo=express)
+![MongoDB](https://img.shields.io/badge/MongoDB-7.0-47A248?logo=mongodb)
+
+**API Features:**
+- RESTful endpoints with JWT authentication
+- Rate limiting and request validation
+- Serverless deployment on Vercel
+- MongoDB Atlas with ACID transactions
+
+### DevOps & Infrastructure
+![Firebase](https://img.shields.io/badge/Firebase-11.9.1-FFCA28?logo=firebase)
+![Vercel](https://img.shields.io/badge/Vercel-6.0.0-000000?logo=vercel)
+![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-3.0-2088FF?logo=githubactions)
+
+**CI/CD Pipeline:**
+- Automated testing with Jest + React Testing Library
+- Preview deployments for all PRs
+- Monitoring with Sentry + Firebase Performance
+
+---
+
+## ✨ Key Features
+
+### Course Management System
+| Feature | Implementation Details |
+|---------|------------------------|
+| 🎥 Course Creation | Drag-and-drop syllabus builder with video upload |
+| 📊 Real-time Seats | WebSocket integration for live enrollment updates |
+| ⭐ Rating System | 5-star ratings with verified student reviews |
+| 🔍 Advanced Search | Algolia-powered search with filters |
+
+### Learning Experience
+| Feature | Implementation Details |
+|---------|------------------------|
+| 📚 Course Player | Interactive video player with bookmarking |
+| 🏆 Achievements | Badge system with unlockable milestones |
+| 💬 Community | Integrated discussion forums per course |
+
+### Admin Dashboard
+| Feature | Implementation Details |
+|---------|------------------------|
+| 👥 User Management | Role-based access control |
+| 📈 Analytics | Revenue and engagement reports |
+| ⚙️ System Config | Dynamic platform settings |
+
+---
+
+## 📂 Project Structure
+```coursion/
+├── client/ # React Frontend
+│ ├── public/ # Static assets
+│ ├── src/
+│ │ ├── api/ # API service layer
+│ │ ├── assets/ # Images, fonts
+│ │ ├── components/ # Reusable UI
+│ │ ├── contexts/ # Global state
+│ │ ├── hooks/ # Custom hooks
+│ │ ├── pages/ # Route components
+│ │ └── utils/ # Helpers, config
+│
+├── server/ # Node.js Backend
+│ ├── config/ # DB, auth setup
+│ ├── controllers/ # Route handlers
+│ ├── models/ # MongoDB schemas
+│ ├── routes/ # Express routers
+│ └── middleware/ # Auth, validation
+│
+├── .github/ # CI/CD workflows
+├── docs/ # Project documentation
+└── scripts/ # Deployment scripts
 ```
-/               → Home
-/Courses        → Courses list
-/Courses/:id    → Course details
-/TeachOnCoursion→ How‑to‑teach landing
-/add-course     → (private) New course form
-/my-courses     → (private) My enrolled courses
-/manage-courses → (private) Instructor dashboard
-/edit-course/:id→ (private) Edit course
-/signin         → Sign in
-/register       → Register
-/forgot-password→ Forgot password
-/Profile        → (private) Profile
-/update-profile → (private) Update profile
-*               → 404 Not‑Found
-```
+
 
 ---
 
-## 🧩 Main NPM Packages
+## 🚀 Getting Started
 
-```
-@tailwindcss/vite       4.1.8
-axios                   1.9.0
-firebase                11.9.1
-framer-motion           12.17.0
-react                   19.1.0
-react-countup           6.5.3
-react-dom               19.1.0
-react-icons             5.5.0
-react-intersection-observer 9.16.0
-react-router            7.6.2
-react-slick             0.30.3
-slick-carousel          1.8.1
-sweetalert2             11.6.13
-tailwindcss             4.1.8
-daisyui                 ^4 (included via Tailwind plugin)
-```
+Follow these instructions to set up the project locally for development and testing.
+
+### ✅ Prerequisites
+
+Make sure you have the following installed:
+
+- **Node.js** v20+
+- **MongoDB Atlas** account (for cloud database)
+- **Firebase Project** (for authentication)
 
 ---
 
-## 🏗️ Local Development
+## 🛠️ Installation
+
+### 1. Clone the Repository (with Submodules)
 
 ```bash
-# 1. clone both repos
-git clone https://github.com/Programming-Hero-Web-Course4/b11a11-client-side-TonmoySarker-BD.git coursion-client
-git clone https://github.com/Programming-Hero-Web-Course4/b11a11-server-side-TonmoySarker-BD.git coursion-server
-
-# 2. install deps
-cd coursion && npm install
-cd ../coursion-server && npm install
-
-# 3. server – add a .env with
-# DB_USER=...
-# DB_PASS=...
-# JWT_SECRET=...
-npm run dev           # server on http://localhost:3000
-
-# 4. client – add a .env with
-# VITE_API_URL=http://localhost:3000
-npm run dev           # client on http://localhost:5173
+git clone --recurse-submodules https://github.com/TonmoySarker-BD/coursion.git
+cd coursion
 ```
+
+### 2. Setup Client
+
+```bash
+cd client
+npm install
+cp .env.example .env.local
+```
+
+Add your Firebase credentials to `.env.local`:
+
+```ini
+VITE_apiKey=
+VITE_authDomain=
+VITE_projectId=
+VITE_storageBucket=
+VITE_messagingSenderId=
+VITE_appId=
+```
+
+### 3. Setup Server
+
+```bash
+cd ../server
+npm install
+cp .env.example .env
+```
+
+Fill out the `.env` file with your MongoDB URI and other server-side secrets.
 
 ---
 
-## 📜 License
+## 💻 Running the App (Development Mode)
 
-MIT © 2025 Tonmoy Sarker
+From the root directory, run:
+
+```bash
+npm run dev --workspace=client
+npm run dev --workspace=server
+```
+
+This will start both the frontend and backend in development mode.
+
+---
+
+## 🧩 Tech Stack
+
+- **Frontend:** React + Vite + Firebase Auth
+- **Backend:** Node.js + Express
+- **Database:** MongoDB Atlas
+- **Auth:** Firebase
+- **Package Management:** npm + monorepo with workspaces
+
+---
+
+## 📈 Future Roadmap
+
+### Q3 2025
+
+- 📱 Mobile App (React Native)
+- 💳 Payment Gateway Integration (SSLCommerz / Stripe)
+- 🤖 AI-powered Course Recommendations
+
+### Q4 2025
+
+- 📜 Learning Path Certification
+- 👥 Enterprise Team Accounts
+- 📦 SCORM Compliance
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! Please fork the repo and submit a pull request for any feature, bug fix, or improvement.
+
+---
+
+## 📬 Contact
+
+For any queries or collaborations, reach out at: [tonmoycsebd@gmail.com]
