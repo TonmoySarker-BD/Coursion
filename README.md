@@ -1,5 +1,3 @@
-# 🎓 Coursion - Online Course Marketplace
-
 # 🎓 Coursion – Full Stack Online Course Platform
 
 Coursion is a modern, full-stack online learning platform designed for scalability, performance, and a seamless user experience. Built with **React**, **Express**, **MongoDB**, and **Firebase**, it allows users to explore, purchase, and complete courses with ease.
@@ -18,8 +16,6 @@ A **full-stack online course marketplace** built with React 19 and serverless ar
 |-------------------|---------------------------------------------------------------------|---------------------------------------|
 | Production Client | [coursion.web.app](https://coursion.web.app)                       | React 19 + Firebase Hosting          |
 | Production API    | [api.coursion.app](https://coursion-server-eight.vercel.app)       | Node.js + Express + Vercel Functions |
-| Staging Client    | [staging.coursion.web.app](https://staging-coursion.web.app)       | React 18 + Netlify                   |
-| Staging API       | [staging.api.coursion.app](https://staging-coursion-api.vercel.app)| Node.js + MongoDB Atlas              |
 
 </div>
 
@@ -91,20 +87,6 @@ A **full-stack online course marketplace** built with React 19 and serverless ar
 | ⭐ Rating System | 5-star ratings with verified student reviews |
 | 🔍 Advanced Search | Algolia-powered search with filters |
 
-### Learning Experience
-| Feature | Implementation Details |
-|---------|------------------------|
-| 📚 Course Player | Interactive video player with bookmarking |
-| 🏆 Achievements | Badge system with unlockable milestones |
-| 💬 Community | Integrated discussion forums per course |
-
-### Admin Dashboard
-| Feature | Implementation Details |
-|---------|------------------------|
-| 👥 User Management | Role-based access control |
-| 📈 Analytics | Revenue and engagement reports |
-| ⚙️ System Config | Dynamic platform settings |
-
 ---
 
 ## 📂 Project Structure
@@ -163,7 +145,7 @@ cd coursion
 ```bash
 cd client
 npm install
-cp .env.example .env.local
+cp .env.local
 ```
 
 Add your Firebase credentials to `.env.local`:
@@ -182,7 +164,7 @@ VITE_appId=
 ```bash
 cd ../server
 npm install
-cp .env.example .env
+cp .env
 ```
 
 Fill out the `.env` file with your MongoDB URI and other server-side secrets.
