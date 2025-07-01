@@ -2,6 +2,7 @@ import React from "react";
 import CountUp from "react-countup";
 import { motion } from "framer-motion";
 import { FaUserGraduate, FaCertificate, FaChalkboardTeacher, FaBookOpen } from "react-icons/fa";
+import { Link } from "react-router";
 
 const stats = [
     {
@@ -97,9 +98,9 @@ const PlatformStats = () => {
                     transition={{ delay: 0.5, duration: 0.6 }}
                     viewport={{ once: true }}
                 >
-                    <button className="px-8 py-3 bg-success text-white font-medium rounded-lg hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                    <Link to={"/register"} className="px-8 py-3 bg-success text-white font-medium rounded-lg hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
                         Join Our Community
-                    </button>
+                    </Link>
                 </motion.div>
             </div>
         </section>
