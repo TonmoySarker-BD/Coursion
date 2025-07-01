@@ -52,7 +52,7 @@ const CourseDetails = () => {
                 <img
                     src={course.image}
                     alt={course.title}
-                    className="w-full h-64 object-cover"
+                    className="w-full h-96 object-cover"
                 />
 
                 <div className="p-6">
@@ -69,12 +69,12 @@ const CourseDetails = () => {
                                     )
                                 ))}
                             </div>
-                            <span className="font-medium text-gray-800">
+                            <span className="font-medium ">
                                 {course.rating.toFixed(1)} ({course.reviews?.length || 0} reviews)
                             </span>
                         </div>
                         {/* Duration */}
-                        <div className="flex items-center gap-2 text-gray-600">
+                        <div className="flex items-center gap-2">
                             <FaClock className="text-purple-500" />
                             <span>{course.duration}</span>
                         </div>
@@ -102,7 +102,7 @@ const CourseDetails = () => {
 
                                 <span className="font-bold text-3xl">{course.instructor}</span>
                                 {/* Students */}
-                                <div className="flex items-center gap-2 text-gray-600">
+                                <div className="flex items-center gap-2">
                                     <FaUsers className="text-blue-500" />
                                     <span>{course.students.toLocaleString()} Students</span>
                                 </div>
@@ -142,7 +142,7 @@ const CourseDetails = () => {
                         <ReviewForm courseId={course._id} />
                     ) : (
                         <div className="p-6 bg-white/10 shadow-lg rounded-3xl max-w-7xl mx-auto">
-                            <p className="text-black text-2xl font-semibold mb-3">You must enroll in the course to leave a review.</p>
+                            <p className="text-2xl font-semibold mb-3">You must enroll in the course to leave a review.</p>
 
                         </div>
                     )}

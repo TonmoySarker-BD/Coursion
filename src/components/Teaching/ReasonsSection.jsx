@@ -22,7 +22,7 @@ const ReasonsSection = ({ reasons }) => {
         <div className="mx-4">
             <section
                 ref={ref}
-                className="relative my-12 max-w-7xl mx-auto rounded-3xl bg-green-100/50 py-20  overflow-hidden lg:py-24"
+                className="relative my-12 max-w-7xl mx-auto rounded-3xl bg-green-200/50 py-20  overflow-hidden lg:py-24"
             >
                 {/* radial accent blobs */}
                 <div className="pointer-events-none absolute -left-12 -top-12 h-72 w-72 rounded-full bg-green-800/30 blur-2xl dark:bg-green-700/20" />

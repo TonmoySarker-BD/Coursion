@@ -6,12 +6,12 @@ import { Outlet } from 'react-router';
 const HomeLayout = () => {
     return (
         <div>
-            <header>
+            <header className='sticky top-0 z-50'>
                 <Navbar></Navbar>
             </header>
-            <main className='min-h-auto  md:min-h-[60vh]' style={{
-                background: 'linear-gradient(135deg, rgba(255, 94, 170, 0.3), rgba(104, 68, 217, 0.3))'
-            }}>
+            <main className='min-h-auto  md:min-h-[60vh]' 
+            // style={{ background: 'linear-gradient(135deg, rgba(255, 94, 170, 0.3), rgba(104, 68, 217, 0.3))'}}
+                >
                 <Outlet></Outlet>
             </main>
             <footer>

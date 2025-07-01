@@ -66,16 +66,16 @@ const HowToBegin = () => {
     const [activeStep, setActiveStep] = useState(0);
 
     return (
-        <section className="py-20 px-6 max-w-7xl mx-auto rounded-3xl bg-green-200">
+        <section className="py-20 px-6 max-w-7xl mx-auto text-black rounded-3xl bg-green-200/50">
             <div className="max-w-6xl mx-auto">
-                <h2 className="text-3xl sm:text-4xl font-bold text-center mb-10">
+                <h2 className="text-3xl sm:text-4xl text-black font-bold text-center mb-10">
                     How to begin
                 </h2>
 
                 <div className="flex flex-col md:flex-row gap-10 items-center">
                     {/* Left: Text and Tabs */}
                     <div className="md:w-1/2">
-                        <div className="flex space-x-6 justify-center md:justify-start mb-6 border-b border-gray-300 dark:border-gray-600">
+                        <div className="flex space-x-6 justify-center md:justify-start mb-6">
                             {steps.map((step, index) => (
                                 <button
                                     key={index}
