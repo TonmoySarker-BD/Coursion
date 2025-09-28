@@ -16,6 +16,7 @@ import PrivateRoute from "./PrivateRoute";
 import Profile from "./components/Profile/Profile";
 import UpdateProfile from "./components/Profile/UpdateProfile";
 import TeachOnCoursion from "./components/Teaching/TeachOnCoursion";
+import Quiz from "./components/Qziz/Qziz";
 
 export const router = createBrowserRouter([
     {
@@ -29,6 +30,10 @@ export const router = createBrowserRouter([
             {
                 path: "/Courses",
                 element: <Courses></Courses>
+            },
+            {
+                path: "/Quiz",
+                element: <Quiz></Quiz>
             },
             {
                 path: "/TeachOnCoursion",

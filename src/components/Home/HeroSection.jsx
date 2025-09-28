@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { FaPlay, FaArrowRight, FaCheck, FaStar, FaUsers, FaGraduationCap } from 'react-icons/fa';
+import { Link } from 'react-router';
 
 const HeroSection = () => {
   return (
@@ -53,14 +54,17 @@ const HeroSection = () => {
               transition={{ delay: 0.5 }}
               className="flex flex-col sm:flex-row gap-4 mb-8 justify-center lg:justify-start"
             >
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="btn btn-success btn-lg px-8 py-4 text-lg font-semibold rounded-xl shadow-lg flex items-center gap-2"
-              >
-                Start Learning Today
-                <FaArrowRight className="w-4 h-4" />
-              </motion.button>
+              <Link to="/Quiz">
+                <motion.button
+
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="btn btn-success btn-lg px-8 py-4 text-lg font-semibold rounded-xl shadow-lg flex items-center gap-2"
+                >
+                  Take Quiz Today
+                  <FaArrowRight className="w-4 h-4" />
+                </motion.button>
+              </Link>
 
               <motion.button
                 whileHover={{ scale: 1.02 }}
