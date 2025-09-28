@@ -8,7 +8,7 @@ const Footer = () => {
     const { user } = use(AuthContext);
     return (
         <footer className="bg-success/50 text-base-content px-[5%] py-10 ">
-            <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
 
                 <div>
                     <div className="flex items-center gap-2 mb-3">

@@ -42,7 +42,7 @@ const stats = [
 const PlatformStats = () => {
     return (
         <section className="py-16 ">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <motion.div
                     className="text-center mb-16"
                     initial={{ opacity: 0, y: 20 }}
@@ -51,7 +51,7 @@ const PlatformStats = () => {
                     viewport={{ once: true }}
                 >
                     <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold  dark:text-white mb-4">
-                        Our Learning Community <span className=" bg-clip-text text-success">By Numbers</span>
+                        Our Learning <span className=" bg-clip-text text-success">Community </span>
                     </h2>
                     <p className="text-lg md:text-xl max-w-3xl mx-auto">
                         Join thousands of learners who have transformed their careers with our courses

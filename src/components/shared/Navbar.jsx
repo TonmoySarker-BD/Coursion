@@ -29,7 +29,8 @@ const Navbar = () => {
     );
 
     return (
-        <div className="navbar bg-success  shadow-sm px-[5%]">
+        <div className="bg-success  shadow-sm">
+            <div className="navbar container mx-auto">
             <div className="navbar-start">
                 <div className="dropdown">
                     <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -49,7 +50,7 @@ const Navbar = () => {
             </div>
 
             <div className="navbar-center hidden lg:flex">
-                <ul className="menu menu-horizontal px-1">{menu}</ul>
+                <ul className="menu menu-horizontal px-1 md:text-lg">{menu}</ul>
             </div>
 
             <div className="navbar-end flex items-center">
@@ -76,6 +77,7 @@ const Navbar = () => {
                         </ul>
                     </div>
                 )}
+            </div>
             </div>
         </div>
     );

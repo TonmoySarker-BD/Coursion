@@ -35,20 +35,20 @@ const LatestCourses = () => {
         return () => controller.abort();
     }, [api]);
 
-    const renderStars = (rating) => {
-        const stars = [];
-        const full = Math.floor(rating);
-        const half = rating % 1 >= 0.5;
-        for (let i = 1; i <= 5; i++) {
-            if (i <= full) stars.push(<FaStar key={i} className="text-yellow-400" />);
-            else if (i === full + 1 && half)
-                stars.push(<FaStar key={i} className="text-yellow-400" />);
-            else stars.push(<FaRegStar key={i} className="text-yellow-400" />);
-        }
-        return stars;
-    };
+    // const renderStars = (rating) => {
+    //     const stars = [];
+    //     const full = Math.floor(rating);
+    //     const half = rating % 1 >= 0.5;
+    //     for (let i = 1; i <= 5; i++) {
+    //         if (i <= full) stars.push(<FaStar key={i} className="text-yellow-400" />);
+    //         else if (i === full + 1 && half)
+    //             stars.push(<FaStar key={i} className="text-yellow-400" />);
+    //         else stars.push(<FaRegStar key={i} className="text-yellow-400" />);
+    //     }
+    //     return stars;
+    // };
 
-    const nFmt = (n) => new Intl.NumberFormat().format(n);
+    // const nFmt = (n) => new Intl.NumberFormat().format(n);
 
     if (loading) {
         return (
@@ -67,7 +67,9 @@ const LatestCourses = () => {
         );
 
     return (
-        <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <section className="bg-gray-200/30">
+            <div className="container py-16 px-4 sm:px-6 lg:px-8  mx-auto">
+
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -109,6 +111,7 @@ const LatestCourses = () => {
                     No courses available at the moment
                 </div>
             )}
+            </div>
         </section>
     );
 };

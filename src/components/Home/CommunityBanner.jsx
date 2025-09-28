@@ -12,7 +12,7 @@ const CommunityBanner = () => {
                 className="absolute inset-0 w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-success/10 backdrop-blur-sm" />
-            <div className="relative z-10 max-w-7xl mx-auto">
+            <div className="relative z-10 container mx-auto">
                 <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
                     {/* Left Content */}
                     <motion.div

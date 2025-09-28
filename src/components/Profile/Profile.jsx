@@ -5,7 +5,7 @@ import { AuthContext } from '../../context/Auth/AuthContext';
 
 const Profile = () => {
   const { user, logout } = use(AuthContext);
-  console.log(user)
+  // console.log(user)
   const navigate = useNavigate();
   const handleLogout = async () => {
     try {

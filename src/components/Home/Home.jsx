@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
-import Banner from './Banner';
+// import Banner from './Banner';
 import LatestCourses from './LatestCourses';
 import PopularCourses from './PopularCourses';
 import WhyChooseUs from './WhyChooseUs';
 import PlatformStats from './PlatformStats';
 import CommunityBanner from './CommunityBanner';
 import FAQ from './FAQ';
+import HeroSection from './HeroSection';
 
 const Home = () => {
     // Dynamic title setting
@@ -14,9 +15,10 @@ const Home = () => {
     }, []);
     return (
         <div>
-            <Banner></Banner>
-            <LatestCourses></LatestCourses>
+            <HeroSection />
+            {/* <Banner></Banner> */}
             <PopularCourses></PopularCourses>
+            <LatestCourses></LatestCourses>
             <PlatformStats></PlatformStats>
             <WhyChooseUs></WhyChooseUs>
             <FAQ></FAQ>
