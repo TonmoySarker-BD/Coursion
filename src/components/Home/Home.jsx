@@ -5,6 +5,7 @@ import PopularCourses from './PopularCourses';
 import WhyChooseUs from './WhyChooseUs';
 import PlatformStats from './PlatformStats';
 import CommunityBanner from './CommunityBanner';
+import FAQ from './FAQ';
 
 const Home = () => {
     // Dynamic title setting
@@ -18,6 +19,7 @@ const Home = () => {
             <PopularCourses></PopularCourses>
             <PlatformStats></PlatformStats>
             <WhyChooseUs></WhyChooseUs>
+            <FAQ></FAQ>
             <CommunityBanner></CommunityBanner>
         </div>
     );
