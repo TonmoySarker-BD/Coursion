@@ -143,7 +143,7 @@ export default function EnrollButton({ courseId, totalSeats, students }) {
         <button
             onClick={handleClick}
             disabled={loading || (seatsFull && !enrolled)}
-            className={`flex-1 px-4 py-2 text-white rounded-lg transition
+            className={`px-4 py-2 text-white rounded-lg transition
                 ${enrolled ? "bg-red-500 hover:bg-red-600" : "bg-success hover:bg-success/90"}
                 ${(seatsFull && !enrolled) ? "opacity-50 cursor-not-allowed" : ""}`}
         >

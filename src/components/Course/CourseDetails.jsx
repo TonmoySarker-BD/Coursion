@@ -7,6 +7,7 @@ import useAxiosSecure from "../../API/axios";
 import ReviewForm from "../Review/ReviewForm";
 import ReviewList from "../Review/ReviewList";
 import { AuthContext } from "../../context/Auth/AuthContext";
+import ShareCourse from "../shared/ShareCourse";
 
 const CourseDetails = () => {
     const { user } = use(AuthContext);
@@ -126,12 +127,16 @@ const CourseDetails = () => {
                     </div>
 
 
+                    <div className="flex items-center justify-between flex-wrap gap-4">
 
-                    <EnrollButton
-                        courseId={course._id}
-                        totalSeats={course.totalSeats}
-                        students={course.students}
-                    ></EnrollButton>
+                        <EnrollButton
+                            courseId={course._id}
+                            totalSeats={course.totalSeats}
+                            students={course.students}
+                        ></EnrollButton>
+                        <ShareCourse courseId={course._id} />
+                    </div>
+
                 </div>
             </div>
 
